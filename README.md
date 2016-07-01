@@ -12,7 +12,7 @@ I mean, you probably got what this project is all about:
 
 Random ideas.
 
-Anyway I managed to get ~Travis-CI~, Appveyor and CMake to work
+Anyway I managed to get ~~Travis-CI~~, Appveyor and CMake to work
 
 # Does this compile on...?
 
