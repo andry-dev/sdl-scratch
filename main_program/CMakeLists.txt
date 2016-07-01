@@ -17,6 +17,11 @@ if(MSVC)
 	set(SDL2_LIBRARIES
 		${PROJECT_SOURCE_DIR}/lib/msvc/sdl2/lib/x64/SDL2.lib
 		${PROJECT_SOURCE_DIR}/lib/msvc/sdl2/lib/x64/SDL2main.lib)
+
+	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+	"${PROJECT_SOURCE_DIR}/lib/msvc/sdl2/lib/x64/SDL2.dll"
+	$<TARGET_FILE_DIR:${PROJECT_NAME}>)
 else()
 	INCLUDE(FindPkgConfig)
 
