@@ -1,4 +1,3 @@
-sudo: false
 language: cpp
 
 compiler:
@@ -6,6 +5,9 @@ compiler:
   - clang
 
 before_install:
+  - sudo apt-add-repository --yes ppa:zoogie/sdl2-snapshots       # libsdl2
+  - export PATH=~/usr/bin:$PATH
+
 install:
   - sudo apt-get update -qq
 
@@ -17,12 +19,10 @@ before_script:
 
 script: make
 
-
 addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
-    - zoogie/sdl2-snapshots
     packages:
     - gcc-5
     - g++-5
