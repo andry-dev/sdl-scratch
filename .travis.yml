@@ -23,6 +23,10 @@ matrix:
             - g++-5
             - libglew-dev
 
+before_install:
+    - brew install glew
+    - brew install sdl2
+    - brew install sdl2-image
 
 before_script:
   - mkdir build
