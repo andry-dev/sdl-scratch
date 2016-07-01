@@ -1,7 +1,9 @@
 language: generic
 os: osx
 
-compiler: gcc
+compiler:
+    - gcc
+    - clang
 
 matrix:
     include:
@@ -22,6 +24,19 @@ matrix:
             - gcc-5
             - g++-5
             - libglew-dev
+
+      - os: linux
+        env: COMPILER_NAME=clang CXX=clang++-3.8 CC=clang-3.8
+
+        before_install: *before_install
+        install: *install
+
+        addons:
+          apt:
+            packages:
+              - clang-3.8
+              - libglew-dev
+            sources: *sources
 
 before_install:
     - brew install glew
