@@ -15,8 +15,8 @@ add_executable(${PROJECT_NAME} ${SRC})
 if(MSVC)
 	include_directories(lib/msvc/sdl2/include)
 	set(SDL2_LIBRARIES
-		${PROJECT_SOURCE_DIR}/lib/msvc/sdl2/lib/x64/SDL2
-		${PROJECT_SOURCE_DIR}/lib/msvc/sdl2/lib/x64/SDL2main)
+		${PROJECT_SOURCE_DIR}/lib/msvc/sdl2/lib/x64/SDL2.lib
+		${PROJECT_SOURCE_DIR}/lib/msvc/sdl2/lib/x64/SDL2main.lib)
 else()
 	INCLUDE(FindPkgConfig)
 
