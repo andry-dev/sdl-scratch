@@ -37,7 +37,7 @@ if(MSVC)
 
 	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-	"${PROJECT_SOURCE_DIR}/lib/msvc/glew/bin/Release/x64/glew.dll"
+	"${PROJECT_SOURCE_DIR}/lib/msvc/glew/bin/Release/x64/glew32.dll"
 	$<TARGET_FILE_DIR:${PROJECT_NAME}>)
 
 else()
