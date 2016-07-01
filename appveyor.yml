@@ -1,0 +1,17 @@
+version: 1.0.{build}
+build_script:
+- cmd: >-
+    cd c:\projects\sdl-scratch
+
+    mkdir build
+
+    cd build
+
+    cmake -LA -G "Visual Studio 14 Win64" ..
+
+    dir
+
+    msbuild andryDoesSomethingWhileListeningToWeirdMusic.sln
+artifacts:
+- path: '**\Debug\OpenGL_test.exe'
+  name: Debug TEST
