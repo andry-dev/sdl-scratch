@@ -1,17 +1,13 @@
+sudo: false
 language: cpp
 
 compiler:
   - gcc
+  - clang
 
 before_install:
-  - sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test     # newer toolchain
-  - sudo apt-add-repository --yes ppa:zoogie/sdl2-snapshots       # libsdl2
-  - export PATH=~/usr/bin:$PATH
-
 install:
   - sudo apt-get update -qq
-  - sudo apt-get install -q -y libsdl2-dev libsdl2-image-dev
-  - sudo apt-get install -q -y libglew libglew-dev
 
 
 before_script:
@@ -20,3 +16,17 @@ before_script:
   - cmake ..
 
 script: make
+
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    - zoogie/sdl2-snapshots
+    packages:
+    - gcc-5
+    - g++-5
+    - clang
+    - libsdl2-dev
+    - libsdl2-image-dev
+    - libglew-dev
