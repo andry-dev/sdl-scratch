@@ -23,6 +23,7 @@ private:
 	void init();
 	void processInputs();
 	void gameLoop();
+	void drawGame();
 
 	int m_width  = 0;
 	int m_height = 0;

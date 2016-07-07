@@ -6,9 +6,6 @@
 
 #include "../include/MainGame.h"
 
-#define WINLEL_WIDTH 640
-#define WINLEL_HEIGHT 480
-
 int main(int, char**)
 {
 	MainGame game("Test OpenGL", 800, 600);
