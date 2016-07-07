@@ -6,6 +6,12 @@
 
 #include <string>
 
+enum class GameState
+{
+	PLAY,
+	EXIT
+};
+
 class MainGame
 {
 public:
@@ -15,13 +21,15 @@ public:
 
 private:
 	void init();
-	void initInputs();
+	void processInputs();
 	void gameLoop();
 
 	int m_width  = 0;
 	int m_height = 0;
 	
 	SDL_Window* m_window;
+
+	GameState m_gameState;
 };
 
 #endif /* MAIN_GAME_H */
