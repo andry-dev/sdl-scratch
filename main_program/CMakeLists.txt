@@ -9,7 +9,8 @@ endif()
 
 set(SRC
 	src/main.cpp
-	src/MainGame.cpp)
+	src/MainGame.cpp
+	src/Video/Sprite.cpp)
 
 include_directories(include)
 

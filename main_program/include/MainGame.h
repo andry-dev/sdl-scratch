@@ -5,6 +5,9 @@
 #include <GL/glew.h>
 
 #include <string>
+#include <memory>
+
+#include "Video/Sprite.h"
 
 enum class GameState
 {
@@ -31,6 +34,8 @@ private:
 	SDL_Window* m_window;
 
 	GameState m_gameState;
+
+	std::unique_ptr<Sprite> m_sprite;
 };
 
 #endif /* MAIN_GAME_H */

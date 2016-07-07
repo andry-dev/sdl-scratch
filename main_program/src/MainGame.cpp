@@ -1,6 +1,8 @@
-#include "../include/MainGame.h"
+#include "MainGame.h"
+
 #include <iostream>
-#include "../include/Log.h"
+#include "Log.h"
+
 
 MainGame::MainGame(const std::string& name, int width, int height)
 	: m_width(width), m_height(height), m_gameState(GameState::PLAY)
@@ -29,6 +31,8 @@ MainGame::~MainGame()
 
 void MainGame::init()
 {
+	m_sprite = std::make_unique<Sprite>(-1, -1, 1, 1);
+
 	gameLoop();
 }
 
@@ -65,6 +69,7 @@ void MainGame::drawGame()
 	glClearDepth(1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	m_sprite->draw();
 
 	SDL_GL_SwapWindow(m_window);
 }
