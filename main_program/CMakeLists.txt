@@ -42,6 +42,9 @@ if(MSVC)
 	"${PROJECT_SOURCE_DIR}/lib/msvc/glew/bin/Release/x64/glew32.dll"
 	$<TARGET_FILE_DIR:${PROJECT_NAME}>)
 
+	set(WIN32_OPENGL_LIBS
+		opengl32.lib)
+
 else()
 	INCLUDE(FindPkgConfig)
 
@@ -51,4 +54,4 @@ else()
 	include_directories(${GLEW_INCLUDE_LIBRARIES})
 endif()
 
-target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} ${GLEW_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} ${GLEW_LIBRARIES} ${WIN32_OPENGL_LIBS})
