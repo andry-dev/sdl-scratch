@@ -8,7 +8,8 @@ else()
 endif()
 
 set(SRC
-	src/main.cpp)
+	src/main.cpp
+	src/MainGame.cpp)
 
 include_directories(include)
 
