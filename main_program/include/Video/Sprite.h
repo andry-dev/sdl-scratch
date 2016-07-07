@@ -8,17 +8,17 @@
 class Sprite
 {
 public:
-	Sprite(int x, int y, int w, int h);
+	Sprite(float x, float y, float w, float h);
 	~Sprite();
 	
 	void draw();
 private:
 
 
-	int m_xpos = 0;
-	int m_ypos = 0;
-	int m_width = 0;
-	int m_height = 0;
+	float m_xpos = 0;
+	float m_ypos = 0;
+	float m_width = 0;
+	float m_height = 0;
 
 	std::uint32_t m_VBOID = 0;
 	

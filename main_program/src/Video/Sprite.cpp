@@ -2,7 +2,7 @@
 
 #include <array>
 
-Sprite::Sprite(int x, int y, int w, int h)
+Sprite::Sprite(float x, float y, float w, float h)
 	: m_xpos(x), m_ypos(y), m_width(w), m_height(h)
 {
 	if (m_VBOID == 0)
