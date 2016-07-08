@@ -2,19 +2,21 @@ cmake_minimum_required(VERSION 2.8)
 project(OpenGL_test)
 
 if(MSVC)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14 /W4")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
 else()
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -pipe")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pipe")
 endif()
 
 set(SRC
 	src/main.cpp
 	src/MainGame.cpp
-	src/Video/Sprite.cpp)
+	src/Video/Sprite.cpp
+	src/Video/Shader.cpp)
 
 include_directories(include)
 
 add_executable(${PROJECT_NAME} ${SRC})
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 14)
 
 message(STATUS "The Flags are: ${CMAKE_CXX_FLAGS}")
 

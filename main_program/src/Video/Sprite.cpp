@@ -33,7 +33,7 @@ Sprite::Sprite(float x, float y, float w, float h)
 	vertexData.at(11) = m_ypos + m_height;
 	
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBOID);
-	glBufferData(GL_ARRAY_BUFFER, vertexData.size(), vertexData.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(float), vertexData.data(), GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 

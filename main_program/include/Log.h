@@ -5,20 +5,22 @@
 #include <string>
 #include <iostream>
 
+#include <SDL2/SDL.h>
+
 namespace Log
 {
 
-	void warning(const std::string& str)
+	inline void warning(const std::string& str)
 	{
 		std::cout << "[W] " + str << '\n';
 	}
 
-	void error(const std::string& str)
+	inline void error(const std::string& str)
 	{
 		std::cerr << "[E] " + str << '\n';
 	}
 
-	void info(const std::string& str)
+	inline void info(const std::string& str)
 	{
 		std::cout << "[I] " + str << '\n';
 	}
@@ -27,12 +29,14 @@ namespace Log
 	#define Expects(cond, msg) \
 		if (!(cond)) { \
 			Log::error(msg); \
+			SDL_Quit();  \
 			std::terminate(); \
 		}
 	
 	#define Ensures(cond, msg) \
 		if (!(cond)) { \
 			Log::error(msg); \
+			SDL_Quit();  \
 			std::terminate(); \
 		}
 #else

@@ -32,6 +32,12 @@ MainGame::~MainGame()
 void MainGame::init()
 {
 	m_sprite = std::make_unique<Sprite>(-1, -1, 1, 1);
+	m_shader = std::make_unique<Shader>("shaders/shader.vert", "shaders/shader.frag");
+	m_shader2 = std::make_unique<Shader>("shaders/shader2.vert", "shaders/shader2.frag");
+
+	m_shader->addAttrib("vertexPos");
+	m_shader2->addAttrib("vertexPos");
+	m_shader->link();
 
 	gameLoop();
 }
@@ -55,10 +61,6 @@ void MainGame::processInputs()
 			case SDL_QUIT:
 				m_gameState = GameState::EXIT;
 				break;
-
-			case SDL_MOUSEMOTION:
-				std::cout << evnt.motion.x << " : " << evnt.motion.y << '\n';
-				break;
 		}
 	}
 	
@@ -69,7 +71,9 @@ void MainGame::drawGame()
 	glClearDepth(1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	m_shader->enable();
 	m_sprite->draw();
+	m_shader->disable();
 
 	SDL_GL_SwapWindow(m_window);
 }

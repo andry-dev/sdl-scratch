@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "Video/Sprite.h"
+#include "Video/Shader.h"
 
 enum class GameState
 {
@@ -36,6 +37,8 @@ private:
 	GameState m_gameState;
 
 	std::unique_ptr<Sprite> m_sprite;
+	std::unique_ptr<Shader> m_shader;
+	std::unique_ptr<Shader> m_shader2;
 };
 
 #endif /* MAIN_GAME_H */
