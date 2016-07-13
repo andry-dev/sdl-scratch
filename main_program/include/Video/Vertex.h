@@ -1,7 +1,6 @@
 #ifndef VERTEX_H
 #define VERTEX_H
 
-#include "Common.h"
 #include <array>
 #include <cstdint>
 
@@ -12,6 +11,7 @@ struct Vertex
 		float x;
 		float y;
 	} position;
+
 	struct Color
 	{
 		std::uint8_t r;
@@ -41,8 +41,6 @@ std::array<std::uint8_t, 4> getColors(std::uint32_t color)
 		static_cast<std::uint8_t> (color & 0xFF) // A
 	}};
 }
-
-
 
 // Same as above
 template <typename T>

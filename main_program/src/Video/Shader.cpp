@@ -83,12 +83,11 @@ void Shader::link()
 		int maxLen = 0;
 		glGetShaderiv(m_programID, GL_INFO_LOG_LENGTH, &maxLen);
 
-		std::string errorLog;
-		errorLog.reserve(maxLen);
+		std::vector<GLchar> errorLog(maxLen);
 
 		glGetProgramInfoLog(m_programID, errorLog.size(), &maxLen, &errorLog[0]);
 
-		Log::warning(errorLog);
+		Log::warning(errorLog.data());
 		
 		glDeleteProgram(m_programID);
 		glDeleteShader(m_vertShaderID);
