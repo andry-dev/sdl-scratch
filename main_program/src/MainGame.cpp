@@ -33,10 +33,9 @@ void MainGame::init()
 {
 	m_sprite = std::make_unique<Sprite>(-1, -1, 1, 1);
 	m_shader = std::make_unique<Shader>("shaders/shader.vert", "shaders/shader.frag");
-	m_shader2 = std::make_unique<Shader>("shaders/shader2.vert", "shaders/shader2.frag");
 
 	m_shader->addAttrib("vertexPos");
-	m_shader2->addAttrib("vertexPos");
+	m_shader->addAttrib("vertexCol");
 	m_shader->link();
 
 	gameLoop();

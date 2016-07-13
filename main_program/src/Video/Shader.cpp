@@ -5,6 +5,8 @@
 #include <fstream>
 #include <streambuf>
 
+#include <vector>
+
 #include "Log.h"
 
 Shader::Shader(const std::string& vertPath, const std::string& fragPath)
@@ -58,12 +60,11 @@ void Shader::compile(const std::string& path, int id)
 		int maxLen = 0;
 		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &maxLen);
 
-		std::string errorLog;
-		errorLog.reserve(maxLen);
+		std::vector<GLchar> errorLog(maxLen);
 
-		glGetShaderInfoLog(id, errorLog.size(), &maxLen, &errorLog[0]);
-		Log::warning(errorLog);
-		Expects(0, "Shader failed to compile");
+		glGetShaderInfoLog(id, maxLen, &maxLen, &errorLog[0]);
+		Log::warning(errorLog.data());
+		Expects(0, "Shader " + path + " failed to compile");
 	}
 }
 

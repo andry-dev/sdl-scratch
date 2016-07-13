@@ -1,6 +1,9 @@
 #include "Video/Sprite.h"
 
 #include <array>
+#include <cstddef>
+
+#include "Video/Vertex.h"
 
 Sprite::Sprite(float x, float y, float w, float h)
 	: m_xpos(x), m_ypos(y), m_width(w), m_height(h)
@@ -10,30 +13,38 @@ Sprite::Sprite(float x, float y, float w, float h)
 		glGenBuffers(1, &m_VBOID);
 	}
 
-	std::array<float, 6 * 2> vertexData;
+	std::array<Vertex, 6> vertexData;
 
 	// First Triangle
-	vertexData.at(0) = m_xpos + m_width;
-	vertexData.at(1) = m_ypos + m_height;
+	vertexData.at(0).position.x = m_xpos + m_width;
+	vertexData.at(0).position.y = m_ypos + m_height;
 
-	vertexData.at(2) = m_xpos;
-	vertexData.at(3) = m_ypos + m_height;
+	vertexData.at(1).position.x = m_xpos;
+	vertexData.at(1).position.y = m_ypos + m_height;
 
-	vertexData.at(4) = m_xpos;
-	vertexData.at(5) = m_ypos;
+	vertexData.at(2).position.x = m_xpos;
+	vertexData.at(2).position.y = m_ypos;
 
-	// Seconda Triangle
-	vertexData.at(6) = m_xpos;
-	vertexData.at(7) = m_ypos;
+	// Second Triangle
+	vertexData.at(3).position.x = m_xpos;
+	vertexData.at(3).position.y = m_ypos;
 
-	vertexData.at(8) = m_xpos + m_width;
-	vertexData.at(9) = m_ypos;
+	vertexData.at(4).position.x = m_xpos + m_width;
+	vertexData.at(4).position.y = m_ypos;
 
-	vertexData.at(10) = m_xpos + m_width;
-	vertexData.at(11) = m_ypos + m_height;
+	vertexData.at(5).position.x = m_xpos + m_width;
+	vertexData.at(5).position.y = m_ypos + m_height;
+
+	for (auto& v : vertexData)
+	{
+		v.color.r = 255;
+		v.color.g = 0;
+		v.color.b = 255;
+		v.color.a = 255;
+	}
 	
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBOID);
-	glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(float), vertexData.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(Vertex), vertexData.data(), GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
@@ -51,7 +62,8 @@ void Sprite::draw()
 
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*> (offsetof(Vertex, position)));
+	glVertexAttribPointer(1, 1, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color)));
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
