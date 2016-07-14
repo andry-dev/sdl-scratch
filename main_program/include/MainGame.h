@@ -38,6 +38,8 @@ private:
 
 	std::unique_ptr<Sprite> m_sprite;
 	std::unique_ptr<Shader> m_shader;
+
+	float m_time;
 };
 
 #endif /* MAIN_GAME_H */

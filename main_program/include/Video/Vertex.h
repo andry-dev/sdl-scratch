@@ -4,21 +4,25 @@
 #include <array>
 #include <cstdint>
 
+struct Position
+{
+	float x;
+	float y;
+};
+
+struct Color
+{
+	std::uint8_t r;
+	std::uint8_t g;
+	std::uint8_t b;
+	std::uint8_t a;
+};
+
 struct Vertex
 {
-	struct Position
-	{
-		float x;
-		float y;
-	} position;
+	Position position;
 
-	struct Color
-	{
-		std::uint8_t r;
-		std::uint8_t g;
-		std::uint8_t b;
-		std::uint8_t a;
-	} color;
+	Color color;
 };
 
 std::uint32_t setColors(std::uint8_t r, std::uint8_t g, std::uint8_t b, std::uint8_t a)

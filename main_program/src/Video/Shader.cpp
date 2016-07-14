@@ -130,3 +130,24 @@ void Shader::disable()
 		glDisableVertexAttribArray(i);
 	}
 }
+
+std::int32_t Shader::getUniformLocation(const std::string& uniformName)
+{
+	std::int32_t location = glGetUniformLocation(m_programID, uniformName.c_str());
+	Expects(location != GL_INVALID_INDEX, "Invalid uniform variable" + uniformName);
+	return location;
+}
+
+std::vector<std::int32_t> Shader::getUniformLocation(std::initializer_list<const std::string> uniformsName)
+{
+	std::vector<std::int32_t> vec;
+
+	for (const auto& s : uniformsName)
+	{
+		std::int32_t location = glGetUniformLocation(m_programID, s.c_str());
+		Expects(location != GL_INVALID_INDEX, "Invalid uniform variable " + s);
+		vec.push_back(location);
+	}
+
+	return vec;
+}

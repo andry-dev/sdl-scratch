@@ -3,6 +3,7 @@
 in vec2 vertexPos;
 in vec4 vertexCol;
 
+out vec2 fragPos;
 out vec4 fragCol;
 
 void main()

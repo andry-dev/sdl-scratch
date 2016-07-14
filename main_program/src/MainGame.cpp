@@ -3,6 +3,8 @@
 #include <iostream>
 #include "Log.h"
 
+#include "Video/Uniform.h"
+
 
 MainGame::MainGame(const std::string& name, int width, int height)
 	: m_width(width), m_height(height), m_gameState(GameState::PLAY)
@@ -46,6 +48,7 @@ void MainGame::gameLoop()
 	while (m_gameState != GameState::EXIT)
 	{
 		processInputs();
+		m_time += 0.001;
 		drawGame();
 	}
 }
@@ -71,6 +74,10 @@ void MainGame::drawGame()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	m_shader->enable();
+
+	std::int32_t timeLoc = m_shader->getUniformLocation("time");
+	setUniform(timeLoc, m_time);
+
 	m_sprite->draw();
 	m_shader->disable();
 
