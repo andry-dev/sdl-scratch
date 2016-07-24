@@ -2,9 +2,11 @@
 
 in vec2 vertexPos;
 in vec4 vertexCol;
+in vec2 vertexUV;
 
 out vec2 fragPos;
 out vec4 fragCol;
+out vec2 fragUV;
 
 void main()
 {

@@ -18,11 +18,39 @@ struct Color
 	std::uint8_t a;
 };
 
+struct UV
+{
+	float u;
+	float v;
+};
+
 struct Vertex
 {
 	Position position;
 
 	Color color;
+
+	UV uv;
+
+	void setPosition(float x, float y)
+	{
+		position.x = x;
+		position.y = y;
+	}
+
+	void setColors(std::uint8_t r, std::uint8_t g, std::uint8_t b, std::uint8_t a)
+	{
+		color.r = r;
+		color.g = g;
+		color.b = b;
+		color.a = a;
+	}
+
+	void setUV(float u, float v)
+	{
+		uv.u = u;
+		uv.v = v;
+	}
 };
 
 std::uint32_t setColors(std::uint8_t r, std::uint8_t g, std::uint8_t b, std::uint8_t a)

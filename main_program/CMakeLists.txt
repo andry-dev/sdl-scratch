@@ -56,6 +56,8 @@ else()
 	include_directories(${GLEW_INCLUDE_LIBRARIES})
 endif()
 
+include_directories(lib/universal)
+
 # Add shaders
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy_directory
