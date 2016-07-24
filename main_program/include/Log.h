@@ -39,9 +39,19 @@ namespace Log
 			SDL_Quit();  \
 			std::terminate(); \
 		}
+
+	#define Loge(msg) \
+		Log::error(msg);
+	#define Logw(msg) \
+		Log::warning(msg);
+	#define Logi(msg) \
+		Log::info(msg);
 #else
 	#define Expects(cond, msg)
 	#define Ensures(cond, msg)
+	#define Loge(msg)
+	#define Logw(msg)
+	#define Logi(msg)
 #endif
 
 #define STRINGIFY(x) #x

@@ -11,7 +11,8 @@ set(SRC
 	src/main.cpp
 	src/MainGame.cpp
 	src/Video/Sprite.cpp
-	src/Video/Shader.cpp)
+	src/Video/Shader.cpp
+	src/Video/TextureManager.cpp)
 
 include_directories(include)
 
@@ -63,5 +64,10 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy_directory
 	${PROJECT_SOURCE_DIR}/shaders
 	$<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders)
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+	${PROJECT_SOURCE_DIR}/textures
+	$<TARGET_FILE_DIR:${PROJECT_NAME}>/textures)
 
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} ${GLEW_LIBRARIES} ${WIN32_OPENGL_LIBS})

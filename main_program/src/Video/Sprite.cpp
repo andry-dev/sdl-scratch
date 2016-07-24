@@ -7,10 +7,13 @@
 
 #include "Video/TextureManager.h"
 
+#include "Log.h"
+
 Sprite::Sprite(float x, float y, float w, float h, const std::string& path)
-	: m_xpos(x), m_ypos(y), m_width(w), m_height(h),
-		m_texture(TextureManager::getTexture(path))
+	: m_xpos(x), m_ypos(y), m_width(w), m_height(h)
 {
+	m_texture = TextureManager::getTexture(path);
+
 	if (m_VBOID == 0)
 	{
 		glGenBuffers(1, &m_VBOID);
@@ -42,7 +45,7 @@ Sprite::Sprite(float x, float y, float w, float h, const std::string& path)
 	{
 		v.setColors(255, 0, 255, 255);
 	}
-	
+
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBOID);
 	glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(Vertex), vertexData.data(), GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -73,4 +76,5 @@ void Sprite::draw()
 	glDisableVertexAttribArray(0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	Logi("The texture " + std::to_string(m_texture.id) + " should be drawn");
 }

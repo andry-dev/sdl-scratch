@@ -8,6 +8,8 @@
 #include "IO/BasicIO.h"
 #include "Log.h"
 
+std::map<std::string, Texture> TextureManager::m_map;
+
 Texture TextureManager::getTexture(const std::string& path)
 {
 	auto it = m_map.find(path);
@@ -16,9 +18,11 @@ Texture TextureManager::getTexture(const std::string& path)
 	{
 		Texture tex = load(path);
 		m_map.insert(std::make_pair(path, tex));
+		Logi("Inserted texture " + path);
 		return tex;
 	}
 
+	Logi("Loaded cached texture " + path);
 	return it->second;
 }
 

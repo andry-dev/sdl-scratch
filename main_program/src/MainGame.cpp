@@ -33,7 +33,7 @@ MainGame::~MainGame()
 
 void MainGame::init()
 {
-	m_sprite = std::make_unique<Sprite>(-1, -1, 1, 1);
+	m_sprite = std::make_unique<Sprite>(-1.0f, -1.0f, 2.0f, 2.0f, "textures/spr.png");
 	m_shader = std::make_unique<Shader>("shaders/shader.vert", "shaders/shader.frag");
 
 	m_shader->addAttrib({"vertexPos", "vertexCol", "vertexUV"});
@@ -74,8 +74,10 @@ void MainGame::drawGame()
 
 	m_shader->enable();
 
-	std::int32_t timeLoc = m_shader->getUniformLocation("time");
-	setUniform(timeLoc, m_time);
+	glActiveTexture(GL_TEXTURE0);
+	//std::int32_t timeLoc = m_shader->getUniformLocation("time");
+	//setUniform(timeLoc, m_time);
+	setUniform(m_shader->getUniformLocation("sampler"), 0);
 
 	m_sprite->draw();
 	m_shader->disable();

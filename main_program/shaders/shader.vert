@@ -14,5 +14,7 @@ void main()
 	gl_Position.z = 0.0;
 	gl_Position.w = 1.0;
 
+	fragPos = vertexPos;
 	fragCol = vertexCol;
+	fragUV = vec2(vertexUV.x, 1.0 - vertexUV.y);
 }
