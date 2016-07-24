@@ -33,7 +33,7 @@ Texture TextureManager::load(const std::string& path)
 	std::vector<unsigned char> out;
 	std::vector<unsigned char> in = fileToBuffer(path);
 
-	std::uint64_t width, height;
+	unsigned long width, height;
 
 	int errCode = decodePNG(out, width, height, &in[0], in.size());
 	Expects(errCode != 0, "Can't decode PNG " + path + " \nError code is " + std::to_string(errCode));
