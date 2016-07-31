@@ -21,7 +21,7 @@ MainGame::MainGame(const std::string& name, int width, int height)
 
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 	init();
 }
@@ -33,10 +33,11 @@ MainGame::~MainGame()
 
 void MainGame::init()
 {
-	m_sprite = std::make_unique<Sprite>(-1.0f, -1.0f, 2.0f, 2.0f, "textures/spr.png");
+	m_sprite.push_back(new Sprite(-1.0f, -1.0f, 1.0f, 1.0f, "textures/left_standing.png"));
+	m_sprite.push_back(new Sprite(0.0f, -1.0f, 1.0f, 1.0f, "textures/left_standing.png"));
 	m_shader = std::make_unique<Shader>("shaders/shader.vert", "shaders/shader.frag");
 
-	m_shader->addAttrib({"vertexPos", "vertexCol", "vertexUV"});
+	m_shader->addAttrib({"vertexPosition", "vertexColor", "vertexUV"});
 	m_shader->link();
 
 	gameLoop();
@@ -77,9 +78,15 @@ void MainGame::drawGame()
 	glActiveTexture(GL_TEXTURE0);
 	//std::int32_t timeLoc = m_shader->getUniformLocation("time");
 	//setUniform(timeLoc, m_time);
-	setUniform(m_shader->getUniformLocation("sampler"), 0);
+	setUniform(m_shader->getUniformLocation("mySampler"), 0);
 
-	m_sprite->draw();
+	for (const auto& v : m_sprite)
+	{
+		v->draw();
+	}
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+
 	m_shader->disable();
 
 	SDL_GL_SwapWindow(m_window);

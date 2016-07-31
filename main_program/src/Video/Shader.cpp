@@ -78,6 +78,7 @@ void Shader::link()
 
 	int result = 0;
 	glGetProgramiv(m_programID, GL_LINK_STATUS, &result);
+	// I hate this.
 	if (result == GL_FALSE)
 	{
 		int maxLen = 0;
@@ -109,9 +110,9 @@ void Shader::addAttrib(const std::string& attrib)
 
 void Shader::addAttrib(std::initializer_list<std::string> args)
 {
-	for (const auto& x : args)
+	for (const auto& str : args)
 	{
-		glBindAttribLocation(m_programID, m_attribNum, x.c_str());
+		glBindAttribLocation(m_programID, m_attribNum++, str.c_str());
 	}
 }
 

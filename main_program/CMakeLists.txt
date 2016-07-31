@@ -12,7 +12,7 @@ set(SRC
 	src/MainGame.cpp
 	src/Video/Sprite.cpp
 	src/Video/Shader.cpp
-	src/Video/TextureManager.cpp)
+	src/Video/TextureCache.cpp)
 
 include_directories(include)
 

@@ -4,6 +4,8 @@
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 
+#include <vector>
+
 #include <string>
 #include <memory>
 
@@ -21,8 +23,6 @@ class MainGame
 public:
 	MainGame(const std::string& name, int width, int height);
 	~MainGame();
-	
-
 private:
 	void init();
 	void processInputs();
@@ -36,7 +36,7 @@ private:
 
 	GameState m_gameState;
 
-	std::unique_ptr<Sprite> m_sprite;
+	std::vector<Sprite*> m_sprite;
 	std::unique_ptr<Shader> m_shader;
 
 	float m_time;

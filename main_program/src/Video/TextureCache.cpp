@@ -1,16 +1,24 @@
-#include "Video/TextureManager.h"
+#include "Video/TextureCache.h"
 
 #include <vector>
-#include <cstdint>
 
 #include <GL/glew.h>
 
+#include "lodepng/picopng.h"
 #include "IO/BasicIO.h"
 #include "Log.h"
 
-std::map<std::string, Texture> TextureManager::m_map;
+TextureCache::TextureCache()
+{
 
-Texture TextureManager::getTexture(const std::string& path)
+}
+
+TextureCache::~TextureCache()
+{
+
+}
+
+Texture TextureCache::get(const std::string& path)
 {
 	auto it = m_map.find(path);
 
@@ -26,21 +34,25 @@ Texture TextureManager::getTexture(const std::string& path)
 	return it->second;
 }
 
-Texture TextureManager::load(const std::string& path)
+Texture TextureCache::load(const std::string& path)
 {
 	Texture tex = {};
 
 	std::vector<unsigned char> out;
-	std::vector<unsigned char> in = fileToBuffer(path);
+	std::vector<unsigned char> in;
+	Expects(fileToBuffer(path, in), "Failed to load PNG " + path);
 
 	unsigned long width, height;
 
 	int errCode = decodePNG(out, width, height, &in[0], in.size());
-	Expects(errCode != 0, "Can't decode PNG " + path + " \nError code is " + std::to_string(errCode));
+	Expects(errCode == 0, "Can't decode PNG " + path + " \nError code is " + std::to_string(errCode));
 
 	glGenTextures(1, &tex.id);
+
 	glBindTexture(GL_TEXTURE_2D, tex.id);
+
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &out[0]);
+
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -49,6 +61,9 @@ Texture TextureManager::load(const std::string& path)
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	tex.width = width;
+	tex.height = height;
 
 	return tex;
 }

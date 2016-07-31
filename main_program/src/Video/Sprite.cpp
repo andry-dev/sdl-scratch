@@ -5,14 +5,15 @@
 
 #include "Video/Vertex.h"
 
-#include "Video/TextureManager.h"
+#include "Video/ResourceManager.hpp"
+#include "Video/TextureCache.h"
 
 #include "Log.h"
 
 Sprite::Sprite(float x, float y, float w, float h, const std::string& path)
 	: m_xpos(x), m_ypos(y), m_width(w), m_height(h)
 {
-	m_texture = TextureManager::getTexture(path);
+	m_texture = ResourceManager<TextureCache>::getResource(path);
 
 	if (m_VBOID == 0)
 	{
@@ -43,7 +44,7 @@ Sprite::Sprite(float x, float y, float w, float h, const std::string& path)
 
 	for (auto& v : vertexData)
 	{
-		v.setColors(255, 0, 255, 255);
+		v.setColors(255, 255, 255, 255);
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBOID);
@@ -76,5 +77,4 @@ void Sprite::draw()
 	glDisableVertexAttribArray(0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	Logi("The texture " + std::to_string(m_texture.id) + " should be drawn");
 }

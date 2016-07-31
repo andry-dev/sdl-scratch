@@ -25,4 +25,26 @@ inline std::vector<unsigned char> fileToBuffer(const std::string& path)
 	return buffer;
 }
 
+inline bool fileToBuffer(const std::string& path, std::vector<unsigned char>& buffer)
+{
+    std::ifstream file(path, std::ios::binary);
+	Expects(!file.fail(), "Can't open file " + path);
+
+    //seek to the end
+    file.seekg(0, std::ios::end);
+
+    //Get the file size
+    int fileSize = file.tellg();
+    file.seekg(0, std::ios::beg);
+
+    //Reduce the file size by any header bytes that might be present
+    fileSize -= file.tellg();
+
+    buffer.resize(fileSize);
+    file.read((char *)&(buffer[0]), fileSize);
+    file.close();
+
+    return true;
+}
+
 #endif /* BASIC_IO_H */
