@@ -21,8 +21,9 @@ message(STATUS "The Flags are: ${CMAKE_CXX_FLAGS}")
 include_directories(../tewi/include)
 
 if(MSVC)
-	# Need to add SDL2
+	# Need them libs
 	include_directories(../tewi/lib/msvc/sdl2/include)
+	include_directories(../tewi/lib/msvc/glew/include)
 endif()
 
 # Add shaders
