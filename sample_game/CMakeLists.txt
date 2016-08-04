@@ -18,7 +18,12 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 14)
 
 message(STATUS "The Flags are: ${CMAKE_CXX_FLAGS}")
 
-include_directories(../tewi/include/)
+include_directories(../tewi/include)
+
+if(MSVC)
+	# Need to add SDL2
+	include_directories(../tewi/lib/msvc/sdl2/include)
+endif()
 
 # Add shaders
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
