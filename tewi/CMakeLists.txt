@@ -21,19 +21,28 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 14)
 
 message(STATUS "The Flags are: ${CMAKE_CXX_FLAGS}")
 
+message(STATUS "CMAKE_CURRENT_LIST_DIR:         " ${CMAKE_CURRENT_LIST_DIR})
+message(STATUS "CMAKE_BINARY_DIR:         " ${CMAKE_BINARY_DIR})
+message(STATUS "CMAKE_CURRENT_BINARY_DIR:         " ${CMAKE_CURRENT_BINARY_DIR})
+message(STATUS "CMAKE_SOURCE_DIR:         " ${CMAKE_SOURCE_DIR})
+message(STATUS "CMAKE_CURRENT_SOURCE_DIR:         " ${CMAKE_CURRENT_SOURCE_DIR})
+message(STATUS "PROJECT_BINARY_DIR:         " ${PROJECT_BINARY_DIR})
+message(STATUS "PROJECT_SOURCE_DIR:         " ${PROJECT_SOURCE_DIR})
+
 if(MSVC)
 	# Add SDL
 	set(SDL2_LIBRARIES
 		${PROJECT_SOURCE_DIR}/lib/msvc/sdl2/lib/x64/SDL2.lib
 		${PROJECT_SOURCE_DIR}/lib/msvc/sdl2/lib/x64/SDL2main.lib)
 
-	include_directories(lib/msvc/sdl2/include)
+	include_directories(${PROJECT_SOURCE_DIR}/lib/msvc/sdl2/include)
 
 	# Add GLEW
 	set(GLEW_LIBRARIES
 		${PROJECT_SOURCE_DIR}/lib/msvc/glew/lib/Release/x64/glew32.lib)
 
-	include_directories(lib/msvc/glew/include)
+
+	include_directories(${PROJECT_SOURCE_DIR}/lib/msvc/glew/include)
 
 	set(WIN32_OPENGL_LIBS
 		opengl32.lib)
