@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1)
-project(OpenGL_test)
+project(tewi)
 
 if(MSVC)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
@@ -8,15 +8,15 @@ else()
 endif()
 
 set(SRC
-	src/main.cpp
-	src/MainGame.cpp
 	src/Video/Sprite.cpp
 	src/Video/Shader.cpp
-	src/Video/TextureCache.cpp)
+	src/Video/TextureCache.cpp
+	src/Utils/Clock.cpp
+	src/Utils/TickTimer.cpp)
 
 include_directories(include)
 
-add_executable(${PROJECT_NAME} ${SRC})
+add_library(${PROJECT_NAME} ${SRC})
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 14)
 
 message(STATUS "The Flags are: ${CMAKE_CXX_FLAGS}")
@@ -58,16 +58,5 @@ else()
 endif()
 
 include_directories(lib/universal)
-
-# Add shaders
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E copy_directory
-	${PROJECT_SOURCE_DIR}/shaders
-	$<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders)
-
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E copy_directory
-	${PROJECT_SOURCE_DIR}/textures
-	$<TARGET_FILE_DIR:${PROJECT_NAME}>/textures)
 
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} ${GLEW_LIBRARIES} ${WIN32_OPENGL_LIBS})

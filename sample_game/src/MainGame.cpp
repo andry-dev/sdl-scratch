@@ -6,9 +6,12 @@
 #include "Video/Uniform.h"
 
 
+
 MainGame::MainGame(const std::string& name, int width, int height)
 	: m_width(width), m_height(height), m_gameState(GameState::PLAY)
 {
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
 	SDL_Init(SDL_INIT_EVERYTHING);
 	m_window = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_width, m_height, SDL_WINDOW_OPENGL);
 	Ensures(m_window != nullptr, "Window not initialized");
@@ -18,8 +21,6 @@ MainGame::MainGame(const std::string& name, int width, int height)
 
 	int error = glewInit();
 	Ensures(error == GLEW_OK, "Failed GLEW initialization");
-
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -47,6 +48,11 @@ void MainGame::gameLoop()
 {
 	while (m_gameState != GameState::EXIT)
 	{
+		if (m_tcTimer.update(1000))
+		{
+			Log::info("FPS: " + std::to_string(m_tcTimer.getTickRate()));
+		}
+
 		processInputs();
 		m_time += 0.001;
 		drawGame();

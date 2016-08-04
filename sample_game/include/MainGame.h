@@ -12,6 +12,9 @@
 #include "Video/Sprite.h"
 #include "Video/Shader.h"
 
+#include "Utils/TickTimer.h"
+
+
 enum class GameState
 {
 	PLAY,
@@ -40,6 +43,8 @@ private:
 	std::unique_ptr<Shader> m_shader;
 
 	float m_time;
+
+	TickTimer m_tcTimer;
 };
 
 #endif /* MAIN_GAME_H */
