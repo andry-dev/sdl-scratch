@@ -4,6 +4,7 @@
 #include "Utils/Clock.h"
 
 #include <cstdint>
+#include <cstddef>
 
 class TickTimer
 {
