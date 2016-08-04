@@ -13,5 +13,5 @@ build_script:
 
     msbuild andryDoesSomethingWhileListeningToWeirdMusic.sln
 artifacts:
-- path: '**\Debug\OpenGL_test.exe'
+- path: '**\Debug'
   name: Debug TEST
