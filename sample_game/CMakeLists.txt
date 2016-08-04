@@ -20,27 +20,19 @@ message(STATUS "The Flags are: ${CMAKE_CXX_FLAGS}")
 
 include_directories(../tewi/include)
 
-message(STATUS "CMAKE_CURRENT_LIST_DIR:         " ${CMAKE_CURRENT_LIST_DIR})
-message(STATUS "CMAKE_BINARY_DIR:         " ${CMAKE_BINARY_DIR})
-message(STATUS "CMAKE_CURRENT_BINARY_DIR:         " ${CMAKE_CURRENT_BINARY_DIR})
-message(STATUS "CMAKE_SOURCE_DIR:         " ${CMAKE_SOURCE_DIR})
-message(STATUS "CMAKE_CURRENT_SOURCE_DIR:         " ${CMAKE_CURRENT_SOURCE_DIR})
-message(STATUS "PROJECT_BINARY_DIR:         " ${PROJECT_BINARY_DIR})
-message(STATUS "PROJECT_SOURCE_DIR:         " ${PROJECT_SOURCE_DIR})
-
 if(MSVC)
 	include_directories(${CMAKE_SOURCE_DIR}/tewi/lib/msvc/sdl2/include)
-	include_directories(${CMAKE_SOURCE_DIR}/tewi/lib/msvc/glew/include)
+	add_custom_command(TARGET OpenGL_test POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+	"${CMAKE_SOURCE_DIR}/tewi/lib/msvc/sdl2/lib/x64/SDL2.dll"
+	$<TARGET_FILE_DIR:${PROJECT_NAME}>)
 
+	include_directories(${CMAKE_SOURCE_DIR}/tewi/lib/msvc/glew/include)
 	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
 	"${CMAKE_SOURCE_DIR}/tewi/lib/msvc/glew/bin/Release/x64/glew32.dll"
 	$<TARGET_FILE_DIR:OpenGL_test>)
 
-	add_custom_command(TARGET OpenGL_test POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-	"${CMAKE_SOURCE_DIR}/tewi/lib/msvc/sdl2/lib/x64/SDL2.dll"
-	$<TARGET_FILE_DIR:${PROJECT_NAME}>)
 endif()
 
 # Add shaders
