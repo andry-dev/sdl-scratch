@@ -13,5 +13,5 @@ build_script:
 
     msbuild andryDoesSomethingWhileListeningToWeirdMusic.sln
 artifacts:
-- path: '**\Debug'
+- path: build\sample_game\Debug
   name: Debug TEST
