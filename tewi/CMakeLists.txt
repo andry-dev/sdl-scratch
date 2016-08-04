@@ -29,21 +29,11 @@ if(MSVC)
 
 	include_directories(lib/msvc/sdl2/include)
 
-	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-	"${PROJECT_SOURCE_DIR}/lib/msvc/sdl2/lib/x64/SDL2.dll"
-	$<TARGET_FILE_DIR:${PROJECT_NAME}>)
-
 	# Add GLEW
 	set(GLEW_LIBRARIES
 		${PROJECT_SOURCE_DIR}/lib/msvc/glew/lib/Release/x64/glew32.lib)
 
 	include_directories(lib/msvc/glew/include)
-
-	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-	"${PROJECT_SOURCE_DIR}/lib/msvc/glew/bin/Release/x64/glew32.dll"
-	$<TARGET_FILE_DIR:${PROJECT_NAME}>)
 
 	set(WIN32_OPENGL_LIBS
 		opengl32.lib)

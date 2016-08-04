@@ -24,6 +24,16 @@ if(MSVC)
 	# Need them libs
 	include_directories(../tewi/lib/msvc/sdl2/include)
 	include_directories(../tewi/lib/msvc/glew/include)
+
+	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+	"../tewi/lib/msvc/glew/bin/Release/x64/glew32.dll"
+	$<TARGET_FILE_DIR:${PROJECT_NAME}>)
+
+	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+	"../tewi/lib/msvc/sdl2/lib/x64/SDL2.dll"
+	$<TARGET_FILE_DIR:${PROJECT_NAME}>)
 endif()
 
 # Add shaders
