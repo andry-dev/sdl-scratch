@@ -34,8 +34,8 @@ public:
 private:
 	GameState m_gameState;
 
-	std::vector<Sprite*> m_sprite;
-	std::unique_ptr<Shader> m_shader;
+	std::vector<tewi::Video::Sprite*> m_sprite;
+	std::unique_ptr<tewi::Video::Shader> m_shader;
 
 	float m_time;
 };

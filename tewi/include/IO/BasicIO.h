@@ -7,44 +7,50 @@
 
 #include "Log.h"
 
-inline std::vector<unsigned char> fileToBuffer(const std::string& path)
+namespace tewi
 {
-	std::ifstream file(path, std::ios::binary);
+	namespace IO
+	{
+		inline std::vector<unsigned char> fileToBuffer(const std::string& path)
+		{
+			std::ifstream file(path, std::ios::binary);
 
-	Expects(!file.fail(), "Can't open file " + path);
+			Expects(!file.fail(), "Can't open file " + path);
 
-	file.seekg(0, std::ios::end);
+			file.seekg(0, std::ios::end);
 
-	int fileSize = file.tellg();
+			int fileSize = file.tellg();
 
-	std::vector<unsigned char> buffer(fileSize);
+			std::vector<unsigned char> buffer(fileSize);
 
-	// This cast.
-	file.read((char*)(&buffer[0]), fileSize);
+			// This cast.
+			file.read((char*)(&buffer[0]), fileSize);
 
-	return buffer;
-}
+			return buffer;
+		}
 
-inline bool fileToBuffer(const std::string& path, std::vector<unsigned char>& buffer)
-{
-    std::ifstream file(path, std::ios::binary);
-	Expects(!file.fail(), "Can't open file " + path);
+		inline bool fileToBuffer(const std::string& path, std::vector<unsigned char>& buffer)
+		{
+			std::ifstream file(path, std::ios::binary);
+			Expects(!file.fail(), "Can't open file " + path);
 
-    //seek to the end
-    file.seekg(0, std::ios::end);
+			//seek to the end
+			file.seekg(0, std::ios::end);
 
-    //Get the file size
-    int fileSize = file.tellg();
-    file.seekg(0, std::ios::beg);
+			//Get the file size
+			int fileSize = file.tellg();
+			file.seekg(0, std::ios::beg);
 
-    //Reduce the file size by any header bytes that might be present
-    fileSize -= file.tellg();
+			//Reduce the file size by any header bytes that might be present
+			fileSize -= file.tellg();
 
-    buffer.resize(fileSize);
-    file.read((char *)&(buffer[0]), fileSize);
-    file.close();
+			buffer.resize(fileSize);
+			file.read((char *)&(buffer[0]), fileSize);
+			file.close();
 
-    return true;
+			return true;
+		}
+	}
 }
 
 #endif /* BASIC_IO_H */

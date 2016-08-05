@@ -4,17 +4,24 @@
 #include <map>
 #include "Video/Texture.h"
 
-class TextureCache
+namespace tewi
 {
-public:
-	TextureCache();
-	~TextureCache();
+	namespace Video
+	{
+		class TextureCache
+		{
+		public:
+			TextureCache();
+			~TextureCache();
 
-	Texture get(const std::string& path);
+			Texture get(const std::string& path);
 
-private:
-    Texture load(const std::string& path);
-    std::map<std::string, Texture> m_map;
-};
+		private:
+			Texture load(const std::string& path);
+			std::map<std::string, Texture> m_map;
+		};
+	}
+}
+
 
 #endif /* TEXTURE_CACHE_H */

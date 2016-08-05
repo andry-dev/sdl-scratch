@@ -8,10 +8,10 @@ else()
 endif()
 
 set(SRC
-	src/Window.cpp
 	src/Video/Sprite.cpp
 	src/Video/Shader.cpp
 	src/Video/TextureCache.cpp
+	src/Video/Window.cpp
 	src/Utils/Clock.cpp
 	src/Utils/TickTimer.cpp)
 

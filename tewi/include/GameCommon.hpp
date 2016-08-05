@@ -1,7 +1,7 @@
 #ifndef GAME_COMMON_H
 #define GAME_COMMON_H
 
-#include "Window.h"
+#include "Video/Window.h"
 #include "Utils/TickTimer.h"
 #include "Log.h"
 
@@ -15,7 +15,7 @@ namespace tewi
 	public:
 		GameCommon(const std::string& windowName, int width, int height)
 		{
-			m_window = std::make_unique<Window>(windowName, width, height);
+			m_window = std::make_unique<Video::Window>(windowName, width, height);
 			Log::info("CALLED GameCommon::GameCommon");
 		}
 
@@ -46,8 +46,8 @@ namespace tewi
 			m_window->swap();
 		}
 		
-		TickTimer m_tickTimer;
-		std::unique_ptr<Window> m_window;
+		Utils::TickTimer m_tickTimer;
+		std::unique_ptr<Video::Window> m_window;
 	private:
 		inline Derived& impl() { return *static_cast<Derived*>(this); }
 

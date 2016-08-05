@@ -3,11 +3,17 @@
 
 #include <cstdint>
 
-struct Texture
+namespace tewi
 {
-	std::uint32_t id;
-	int width;
-	int height;
-};
+	namespace Video
+	{
+		struct Texture
+		{
+			std::uint32_t id;
+			int width;
+			int height;
+		};
+	}
+}
 
 #endif /* OPENGL_TEXTURE_H */
