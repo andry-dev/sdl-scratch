@@ -18,7 +18,7 @@ public:
 	TickTimer(TickTimer&& rhs);
 	TickTimer& operator=(TickTimer&& rhs);
 
-	bool update(double freq);
+	bool update(double freq = 1000);
 
 	inline std::size_t getTickRate() const { return m_tickRate; }
 private:
