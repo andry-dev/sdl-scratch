@@ -3,6 +3,8 @@ build_script:
 - cmd: >-
     cd c:\projects\sdl-scratch
 
+    git submodule update --init --recursive
+
     mkdir build
 
     cd build
