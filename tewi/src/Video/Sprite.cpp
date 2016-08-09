@@ -17,6 +17,7 @@ namespace tewi
 		Sprite::Sprite(float x, float y, float w, float h, const std::string& path)
 			: m_xpos(x), m_ypos(y), m_width(w), m_height(h)
 		{
+			Log::info("Sprite::Sprite");
 			m_texture = ResourceManager<TextureCache>::getResource(path);
 
 			if (m_VBOID == 0)
@@ -62,6 +63,8 @@ namespace tewi
 			{
 				glDeleteBuffers(1, &m_VBOID);
 			}
+
+			Log::info("Sprite::~Sprite");
 		}
 
 		void Sprite::draw()

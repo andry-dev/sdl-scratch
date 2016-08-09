@@ -1,6 +1,7 @@
 #include "Video/Window.h"
 
 #include "Log.h"
+#include "Utils/DebugOnly.h"
 
 namespace tewi
 {
@@ -15,10 +16,10 @@ namespace tewi
 			m_window = SDL_CreateWindow(windowName.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_width, m_height, SDL_WINDOW_OPENGL);
 			Ensures(m_window != nullptr, "Window not initialized");
 
-			SDL_GLContext glContext = SDL_GL_CreateContext(m_window);
+			DebugOnly<SDL_GLContext> glContext = SDL_GL_CreateContext(m_window);
 			Ensures(glContext != nullptr, "Context not initialized");
 
-			int error = glewInit();
+			DebugOnly<int> error = glewInit();
 			Ensures(error == GLEW_OK, "Failed GLEW initialization");
 
 			glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -30,11 +31,8 @@ namespace tewi
 		}
 
 		Window::Window(Window&& rhs)
-			: m_window(rhs.m_window),
-			m_width(std::move(rhs.m_width)),
-			m_height(std::move(rhs.m_height)),
-			m_windowName(std::move(rhs.m_windowName))
-
+			: m_window(rhs.m_window), m_width(std::move(rhs.m_width)),
+			m_height(std::move(rhs.m_height)), m_windowName(std::move(rhs.m_windowName))
 		{
 			rhs.m_window = nullptr;
 		}

@@ -7,6 +7,7 @@
 #include "lodepng/picopng.h"
 #include "IO/BasicIO.h"
 #include "Log.h"
+#include "Utils/DebugOnly.h"
 
 namespace tewi
 {
@@ -44,11 +45,12 @@ namespace tewi
 
 			std::vector<unsigned char> out;
 			std::vector<unsigned char> in;
-			Expects(IO::fileToBuffer(path, in), "Failed to load PNG " + path);
+			DebugOnly<bool> loadedPNG = IO::fileToBuffer(path, in);
+			Expects(loadedPNG, "Failed to load PNG " + path);
 
 			unsigned long width, height;
 
-			int errCode = decodePNG(out, width, height, &in[0], in.size());
+			DebugOnly<int> errCode = decodePNG(out, width, height, &in[0], in.size());
 			Expects(errCode == 0, "Can't decode PNG " + path + " \nError code is " + std::to_string(errCode));
 
 			glGenTextures(1, &tex.id);

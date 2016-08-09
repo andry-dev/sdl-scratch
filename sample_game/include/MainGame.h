@@ -32,12 +32,8 @@ public:
 	void draw();
 
 private:
-	GameState m_gameState;
-
-	std::vector<tewi::Video::Sprite*> m_sprite;
+	std::unique_ptr<tewi::Video::Sprite> m_sprite;
 	std::unique_ptr<tewi::Video::Shader> m_shader;
-
-	float m_time;
 };
 
 #endif /* MAIN_GAME_H */
