@@ -14,6 +14,7 @@
 
 #include "Utils/TickTimer.h"
 
+#include "Video/Camera2D.h"
 
 enum class GameState
 {
@@ -29,11 +30,14 @@ public:
 
 	void init();
 	void processInputs();
+	void update();
 	void draw();
 
 private:
 	std::unique_ptr<tewi::Video::Sprite> m_sprite;
 	std::unique_ptr<tewi::Video::Shader> m_shader;
+
+	tewi::Video::Camera2D m_camera;
 };
 
 #endif /* MAIN_GAME_H */

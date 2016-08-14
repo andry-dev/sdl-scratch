@@ -9,7 +9,6 @@ in vec2 fragmentUV;
 //for each pixel.
 out vec4 color;
 
-uniform float time;
 uniform sampler2D mySampler;
 
 void main() {

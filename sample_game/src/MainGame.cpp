@@ -5,8 +5,11 @@
 
 #include "Video/Uniform.h"
 
+#define CAMERA_SPEED 10.0f
+
 MainGame::MainGame(const std::string& name, int width, int height)
-	: GameCommon(name, width, height)
+	: GameCommon(name, width, height),
+	m_camera(width, height)
 {
 	tewi::Log::info("MainGame::MainGame");
 }
@@ -19,7 +22,7 @@ MainGame::~MainGame()
 void MainGame::init()
 {
 	tewi::Log::info("MainGame::init");
-	m_sprite = std::make_unique<tewi::Video::Sprite>(-1.0f, -1.0f, 1.0f, 1.0f, "textures/left_standing.png");
+	m_sprite = std::make_unique<tewi::Video::Sprite>(0.0f, 0.0f, m_window->getWidth() / 2, m_window->getWidth() / 2, "textures/left_standing.png");
 	m_shader = std::make_unique<tewi::Video::Shader>("shaders/shader.vert", "shaders/shader.frag");
 
 	m_shader->addAttrib({"vertexPosition", "vertexColor", "vertexUV"});
@@ -28,24 +31,59 @@ void MainGame::init()
 
 void MainGame::processInputs()
 {
-	SDL_Event evnt;
-	while (SDL_PollEvent(&evnt))
+	switch (m_event.type)
 	{
+		case SDL_KEYDOWN:
+			switch (m_event.key.keysym.sym)
+			{
+				case SDLK_e:
+					m_camera.setPosition(m_camera.getPosition() + glm::vec2(0.0f, -CAMERA_SPEED));
+					break;
+				case SDLK_s:
+					m_camera.setPosition(m_camera.getPosition() + glm::vec2(CAMERA_SPEED, 0.0f));
+					break;
+				case SDLK_d:
+					m_camera.setPosition(m_camera.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
+					break;
+				case SDLK_f:
+					m_camera.setPosition(m_camera.getPosition() + glm::vec2(-CAMERA_SPEED, 0.0f));
+					break;
+				case SDLK_w:
+					m_camera.setScale(m_camera.getScale() + 0.1f);
+					break;
+				case SDLK_r:
+					m_camera.setScale(m_camera.getScale() - 0.1f);
+					break;
+			}
+			break;
 
+		case SDL_MOUSEWHEEL:
+			switch(m_event.wheel.type)
+			{
+				case SDL_MOUSEWHEEL:
+					m_camera.setScale(m_camera.getScale() + m_event.wheel.x);
+			}
+			break;
 	}
+
+}
+
+void MainGame::update()
+{
+	m_camera.update();
 }
 
 void MainGame::draw()
 {
 	m_shader->enable();
 
-	// Pure questo
 	glActiveTexture(GL_TEXTURE0);
 	tewi::Video::setUniform(m_shader->getUniformLocation("mySampler"), 0);
 
+	tewi::Video::setUniform(m_shader->getUniformLocation("P"), m_camera.getMatrix());
+
 	m_sprite->draw();
 
-	// Questo va ucciso ASAP
     glBindTexture(GL_TEXTURE_2D, 0);
 
 	m_shader->disable();
