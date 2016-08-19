@@ -1,12 +1,12 @@
 #version 130
-//The vertex shader operates on each vertex
 
-//input data from the VBO. Each vertex is 2 floats
 in vec2 vertexPosition;
-in vec4 vertexColor;
+flat in uint vertexTID;
 in vec2 vertexUV;
+in vec4 vertexColor;
 
 out vec2 fragmentPosition;
+flat out uint fragmentTID;
 out vec4 fragmentColor;
 out vec2 fragmentUV;
 

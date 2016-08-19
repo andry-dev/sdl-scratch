@@ -22,10 +22,10 @@ MainGame::~MainGame()
 void MainGame::init()
 {
 	tewi::Log::info("MainGame::init");
-	m_sprite = std::make_unique<tewi::Video::Sprite>(0.0f, 0.0f, m_window->getWidth() / 2, m_window->getWidth() / 2, "textures/left_standing.png");
+	m_sprite = std::make_unique<tewi::Video::Sprite>(glm::vec2(0.0f, 0.0f), glm::vec2(m_window->getWidth() / 2, m_window->getWidth() / 2), "textures/left_standing.png");
 	m_shader = std::make_unique<tewi::Video::Shader>("shaders/shader.vert", "shaders/shader.frag");
 
-	m_shader->addAttrib({"vertexPosition", "vertexColor", "vertexUV"});
+	m_shader->addAttrib({"vertexPosition", "vertexUV", "vertexTID", "vertexColor"});
 	m_shader->link();
 }
 
@@ -33,6 +33,7 @@ void MainGame::processInputs()
 {
 	switch (m_event.type)
 	{
+#if 1
 		case SDL_KEYDOWN:
 			switch (m_event.key.keysym.sym)
 			{
@@ -64,6 +65,7 @@ void MainGame::processInputs()
 					m_camera.setScale(m_camera.getScale() + m_event.wheel.x);
 			}
 			break;
+#endif
 	}
 
 }
@@ -77,14 +79,17 @@ void MainGame::draw()
 {
 	m_shader->enable();
 
-	glActiveTexture(GL_TEXTURE0);
 	tewi::Video::setUniform(m_shader->getUniformLocation("mySampler"), 0);
 
 	tewi::Video::setUniform(m_shader->getUniformLocation("P"), m_camera.getMatrix());
 
-	m_sprite->draw();
+	m_batch.begin();
 
-    glBindTexture(GL_TEXTURE_2D, 0);
+	m_batch.add(m_sprite.get());
+
+	m_batch.end();
+
+	m_batch.draw();
 
 	m_shader->disable();
 }
