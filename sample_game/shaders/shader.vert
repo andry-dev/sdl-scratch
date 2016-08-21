@@ -1,12 +1,12 @@
 #version 130
 
 in vec2 vertexPosition;
-flat in uint vertexTID;
+in float vertexTID;
 in vec2 vertexUV;
 in vec4 vertexColor;
 
 out vec2 fragmentPosition;
-flat out uint fragmentTID;
+out float fragmentTID;
 out vec4 fragmentColor;
 out vec2 fragmentUV;
 
@@ -21,4 +21,6 @@ void main() {
     fragmentColor = vertexColor;
     
     fragmentUV = vec2(vertexUV.x, 1.0 - vertexUV.y);
+
+	fragmentTID = vertexTID;
 }

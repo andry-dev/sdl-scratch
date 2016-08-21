@@ -5,7 +5,7 @@
 
 #include "Video/Uniform.h"
 
-#define CAMERA_SPEED 10.0f
+#define CAMERA_SPEED 40.0f
 
 MainGame::MainGame(const std::string& name, int width, int height)
 	: GameCommon(name, width, height),
@@ -21,8 +21,17 @@ MainGame::~MainGame()
 
 void MainGame::init()
 {
+	const int spriteSize = m_window->getWidth() / 4;
+
 	tewi::Log::info("MainGame::init");
-	m_sprite = std::make_unique<tewi::Video::Sprite>(glm::vec2(0.0f, 0.0f), glm::vec2(m_window->getWidth() / 2, m_window->getWidth() / 2), "textures/left_standing.png");
+	m_sprite = std::make_unique<tewi::Video::Sprite>(glm::vec2(0.0f, 0.0f), glm::vec2(spriteSize, spriteSize), "textures/left_standing.png");
+	for (std::size_t j = 0; j < 100; ++j)
+	{
+		for (std::size_t i = 0; i < 100; ++i)
+		{
+			m_spriteArray.emplace_back(glm::vec2(i * 200.0f, j * 200.0f), glm::vec2(spriteSize, spriteSize), "textures/left_standing.png");
+		}
+	}
 	m_shader = std::make_unique<tewi::Video::Shader>("shaders/shader.vert", "shaders/shader.frag");
 
 	m_shader->addAttrib({"vertexPosition", "vertexUV", "vertexTID", "vertexColor"});
@@ -68,24 +77,34 @@ void MainGame::processInputs()
 #endif
 	}
 
+
 }
 
 void MainGame::update()
 {
+	m_timer.update();
 	m_camera.update();
+	tewi::Log::info(std::to_string(m_timer.getTickRate()));
 }
 
 void MainGame::draw()
 {
 	m_shader->enable();
 
-	tewi::Video::setUniform(m_shader->getUniformLocation("mySampler"), 0);
+	const std::vector<int> tex_id_array = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 };
+
+	tewi::Video::setUniform(m_shader->getUniformLocation("mySampler"), tex_id_array);
 
 	tewi::Video::setUniform(m_shader->getUniformLocation("P"), m_camera.getMatrix());
 
 	m_batch.begin();
 
-	m_batch.add(m_sprite.get());
+	//m_batch.add(m_sprite.get());
+
+	for (const auto& v : m_spriteArray)
+	{
+		m_batch.add(&v);
+	}
 
 	m_batch.end();
 

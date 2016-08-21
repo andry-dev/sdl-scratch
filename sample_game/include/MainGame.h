@@ -36,10 +36,12 @@ public:
 
 private:
 	std::unique_ptr<tewi::Video::Sprite> m_sprite;
+	std::vector<tewi::Video::Sprite> m_spriteArray;
 	std::unique_ptr<tewi::Video::Shader> m_shader;
 
 	tewi::Video::Camera2D m_camera;
 	tewi::Video::BatchRenderer2D m_batch;
+	tewi::Utils::TickTimer m_timer;
 };
 
 #endif /* MAIN_GAME_H */
