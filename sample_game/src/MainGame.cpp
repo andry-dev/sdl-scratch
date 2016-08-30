@@ -5,7 +5,7 @@
 
 #include "Video/Uniform.h"
 
-#define CAMERA_SPEED 40.0f
+#define CAMERA_SPEED 20.0f
 
 MainGame::MainGame(const std::string& name, int width, int height)
 	: GameCommon(name, width, height),
@@ -25,9 +25,9 @@ void MainGame::init()
 
 	tewi::Log::info("MainGame::init");
 	m_sprite = std::make_unique<tewi::Video::Sprite>(glm::vec2(0.0f, 0.0f), glm::vec2(spriteSize, spriteSize), "textures/left_standing.png");
-	for (std::size_t j = 0; j < 100; ++j)
+	for (std::size_t j = 0; j < 10; ++j)
 	{
-		for (std::size_t i = 0; i < 100; ++i)
+		for (std::size_t i = 0; i < 10; ++i)
 		{
 			m_spriteArray.emplace_back(glm::vec2(i * 200.0f, j * 200.0f), glm::vec2(spriteSize, spriteSize), "textures/left_standing.png");
 		}
@@ -44,28 +44,12 @@ void MainGame::processInputs()
 	{
 #if 1
 		case SDL_KEYDOWN:
-			switch (m_event.key.keysym.sym)
-			{
-				case SDLK_e:
-					m_camera.setPosition(m_camera.getPosition() + glm::vec2(0.0f, -CAMERA_SPEED));
-					break;
-				case SDLK_s:
-					m_camera.setPosition(m_camera.getPosition() + glm::vec2(CAMERA_SPEED, 0.0f));
-					break;
-				case SDLK_d:
-					m_camera.setPosition(m_camera.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
-					break;
-				case SDLK_f:
-					m_camera.setPosition(m_camera.getPosition() + glm::vec2(-CAMERA_SPEED, 0.0f));
-					break;
-				case SDLK_w:
-					m_camera.setScale(m_camera.getScale() + 0.1f);
-					break;
-				case SDLK_r:
-					m_camera.setScale(m_camera.getScale() - 0.1f);
-					break;
-			}
+			m_inputMan.pressKey(m_event.key.keysym.sym);
 			break;
+
+		case SDL_KEYUP:
+			m_inputMan.relaseKey(m_event.key.keysym.sym);
+
 
 		case SDL_MOUSEWHEEL:
 			switch(m_event.wheel.type)
@@ -77,6 +61,19 @@ void MainGame::processInputs()
 #endif
 	}
 
+
+	if (m_inputMan.isKeyPressed(SDLK_e))
+		m_camera.setPosition(m_camera.getPosition() + glm::vec2(0.0f, -CAMERA_SPEED));
+	if (m_inputMan.isKeyPressed(SDLK_s))
+		m_camera.setPosition(m_camera.getPosition() + glm::vec2(CAMERA_SPEED, 0.0f));
+	if (m_inputMan.isKeyPressed(SDLK_d))
+		m_camera.setPosition(m_camera.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
+	if (m_inputMan.isKeyPressed(SDLK_f))
+		m_camera.setPosition(m_camera.getPosition() + glm::vec2(-CAMERA_SPEED, 0.0f));
+	if (m_inputMan.isKeyPressed(SDLK_w))
+		m_camera.setScale(m_camera.getScale() + 0.1f);
+	if (m_inputMan.isKeyPressed(SDLK_r))
+		m_camera.setScale(m_camera.getScale() - 0.1f);
 
 }
 

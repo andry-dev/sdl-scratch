@@ -17,6 +17,8 @@
 #include "Video/Camera2D.h"
 #include "Video/BatchRenderer2D.h"
 
+#include "IO/InputManager.h"
+
 enum class GameState
 {
 	PLAY,
@@ -42,6 +44,8 @@ private:
 	tewi::Video::Camera2D m_camera;
 	tewi::Video::BatchRenderer2D m_batch;
 	tewi::Utils::TickTimer m_timer;
+
+	tewi::IO::InputManager m_inputMan;
 };
 
 #endif /* MAIN_GAME_H */
