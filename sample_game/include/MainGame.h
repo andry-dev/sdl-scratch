@@ -19,11 +19,7 @@
 
 #include "IO/InputManager.h"
 
-enum class GameState
-{
-	PLAY,
-	EXIT
-};
+#include "Projectile.h"
 
 class MainGame : public tewi::GameCommon<MainGame>
 {
@@ -38,14 +34,13 @@ public:
 
 private:
 	std::unique_ptr<tewi::Video::Sprite> m_sprite;
-	std::vector<tewi::Video::Sprite> m_spriteArray;
 	std::unique_ptr<tewi::Video::Shader> m_shader;
 
 	tewi::Video::Camera2D m_camera;
 	tewi::Video::BatchRenderer2D m_batch;
 	tewi::Utils::TickTimer m_timer;
 
-	tewi::IO::InputManager m_inputMan;
+	std::vector<Projectile> m_projectiles;
 };
 
 #endif /* MAIN_GAME_H */

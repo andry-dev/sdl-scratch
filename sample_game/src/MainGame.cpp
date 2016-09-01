@@ -25,13 +25,6 @@ void MainGame::init()
 
 	tewi::Log::info("MainGame::init");
 	m_sprite = std::make_unique<tewi::Video::Sprite>(glm::vec2(0.0f, 0.0f), glm::vec2(spriteSize, spriteSize), "textures/left_standing.png");
-	for (std::size_t j = 0; j < 10; ++j)
-	{
-		for (std::size_t i = 0; i < 10; ++i)
-		{
-			m_spriteArray.emplace_back(glm::vec2(i * 200.0f, j * 200.0f), glm::vec2(spriteSize, spriteSize), "textures/left_standing.png");
-		}
-	}
 	m_shader = std::make_unique<tewi::Video::Shader>("shaders/shader.vert", "shaders/shader.frag");
 
 	m_shader->addAttrib({"vertexPosition", "vertexUV", "vertexTID", "vertexColor"});
@@ -40,48 +33,50 @@ void MainGame::init()
 
 void MainGame::processInputs()
 {
-	switch (m_event.type)
-	{
-#if 1
-		case SDL_KEYDOWN:
-			m_inputMan.pressKey(m_event.key.keysym.sym);
-			break;
-
-		case SDL_KEYUP:
-			m_inputMan.relaseKey(m_event.key.keysym.sym);
-
-
-		case SDL_MOUSEWHEEL:
-			switch(m_event.wheel.type)
-			{
-				case SDL_MOUSEWHEEL:
-					m_camera.setScale(m_camera.getScale() + m_event.wheel.x);
-			}
-			break;
-#endif
-	}
-
-
-	if (m_inputMan.isKeyPressed(SDLK_e))
+	if (m_inputManager.isKeyPressed(SDLK_e))
 		m_camera.setPosition(m_camera.getPosition() + glm::vec2(0.0f, -CAMERA_SPEED));
-	if (m_inputMan.isKeyPressed(SDLK_s))
+	if (m_inputManager.isKeyPressed(SDLK_s))
 		m_camera.setPosition(m_camera.getPosition() + glm::vec2(CAMERA_SPEED, 0.0f));
-	if (m_inputMan.isKeyPressed(SDLK_d))
+	if (m_inputManager.isKeyPressed(SDLK_d))
 		m_camera.setPosition(m_camera.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
-	if (m_inputMan.isKeyPressed(SDLK_f))
+	if (m_inputManager.isKeyPressed(SDLK_f))
 		m_camera.setPosition(m_camera.getPosition() + glm::vec2(-CAMERA_SPEED, 0.0f));
-	if (m_inputMan.isKeyPressed(SDLK_w))
+	if (m_inputManager.isKeyPressed(SDLK_w))
 		m_camera.setScale(m_camera.getScale() + 0.1f);
-	if (m_inputMan.isKeyPressed(SDLK_r))
+	if (m_inputManager.isKeyPressed(SDLK_r))
 		m_camera.setScale(m_camera.getScale() - 0.1f);
 
+	if (m_inputManager.isKeyPressed(SDL_BUTTON_LEFT))
+	{
+		auto mouseCoords = m_inputManager.m_mouseCoords;
+		m_camera.getWorldCoordsFromScreenCoords(mouseCoords);
+
+		glm::vec2 playerPos(0.0f);
+		glm::vec2 direction = mouseCoords - playerPos;
+		direction = glm::normalize(direction);
+
+		m_projectiles.emplace_back(glm::vec3(playerPos.x, playerPos.y, 0),
+									glm::vec3(direction.x, direction.y, 0), 1.0f, 2000, "textures/left_standing.png");
+	}
 }
 
 void MainGame::update()
 {
 	m_timer.update();
 	m_camera.update();
-	tewi::Log::info(std::to_string(m_timer.getTickRate()));
+
+	for (std::size_t i = 0; i < m_projectiles.size(); )
+	{
+		if (m_projectiles[i].update() == true)
+		{
+			m_projectiles[i] = m_projectiles.back();
+			m_projectiles.pop_back();
+		}
+		else
+		{
+			++i;
+		}
+	}
 }
 
 void MainGame::draw()
@@ -96,11 +91,11 @@ void MainGame::draw()
 
 	m_batch.begin();
 
-	//m_batch.add(m_sprite.get());
+	m_batch.add(m_sprite.get());
 
-	for (const auto& v : m_spriteArray)
+	for (const auto& prj : m_projectiles)
 	{
-		m_batch.add(&v);
+		m_batch.add(&prj);
 	}
 
 	m_batch.end();

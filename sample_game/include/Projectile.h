@@ -1,0 +1,22 @@
+#ifndef PROJECTILE_H
+#define PROJECTILE_H
+
+#include <glm/glm.hpp>
+
+#include "Video/Sprite.h"
+
+class Projectile : public tewi::Video::Sprite
+{
+public:
+	Projectile(const glm::vec3& pos, const glm::vec3& direction, float speed, int lifetime, const std::string& texturePath);
+	~Projectile();
+
+	bool update();
+private:
+	
+	glm::vec3 m_direction;
+	int m_lifetime;
+	float m_speed;
+};
+
+#endif /* PROJECTILE_H */
