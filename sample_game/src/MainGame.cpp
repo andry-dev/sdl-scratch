@@ -25,6 +25,7 @@ void MainGame::init()
 
 	tewi::Log::info("MainGame::init");
 	m_sprite = std::make_unique<tewi::Video::Sprite>(glm::vec2(0.0f, 0.0f), glm::vec2(spriteSize, spriteSize), "textures/left_standing.png");
+	m_player = std::make_unique<Player>(glm::vec2(0.0f, 0.0f), glm::vec2(spriteSize, spriteSize), "textures/spr.png", m_inputManager, 2.0f);
 	m_shader = std::make_unique<tewi::Video::Shader>("shaders/shader.vert", "shaders/shader.frag");
 
 	m_shader->addAttrib({"vertexPosition", "vertexUV", "vertexTID", "vertexColor"});
@@ -33,18 +34,6 @@ void MainGame::init()
 
 void MainGame::processInputs()
 {
-	if (m_inputManager.isKeyPressed(SDLK_e))
-		m_camera.setPosition(m_camera.getPosition() + glm::vec2(0.0f, -CAMERA_SPEED));
-	if (m_inputManager.isKeyPressed(SDLK_s))
-		m_camera.setPosition(m_camera.getPosition() + glm::vec2(CAMERA_SPEED, 0.0f));
-	if (m_inputManager.isKeyPressed(SDLK_d))
-		m_camera.setPosition(m_camera.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
-	if (m_inputManager.isKeyPressed(SDLK_f))
-		m_camera.setPosition(m_camera.getPosition() + glm::vec2(-CAMERA_SPEED, 0.0f));
-	if (m_inputManager.isKeyPressed(SDLK_w))
-		m_camera.setScale(m_camera.getScale() + 0.1f);
-	if (m_inputManager.isKeyPressed(SDLK_r))
-		m_camera.setScale(m_camera.getScale() - 0.1f);
 
 	if (m_inputManager.isKeyPressed(SDL_BUTTON_LEFT))
 	{
@@ -63,6 +52,9 @@ void MainGame::processInputs()
 void MainGame::update()
 {
 	m_timer.update();
+	m_player->update();
+
+	m_camera.setPosition(m_player->getPosition());
 	m_camera.update();
 
 	for (std::size_t i = 0; i < m_projectiles.size(); )
@@ -77,6 +69,13 @@ void MainGame::update()
 			++i;
 		}
 	}
+
+	if (m_player->checkAABB(m_sprite.get()))
+	{
+		tewi::Log::info("Sprites collided");
+	}
+
+	std::printf("%lu\n", m_timer.getTickRate());
 }
 
 void MainGame::draw()
@@ -92,6 +91,7 @@ void MainGame::draw()
 	m_batch.begin();
 
 	m_batch.add(m_sprite.get());
+	m_batch.add(m_player.get());
 
 	for (const auto& prj : m_projectiles)
 	{

@@ -21,6 +21,8 @@
 
 #include "Projectile.h"
 
+#include "Player.h"
+
 class MainGame : public tewi::GameCommon<MainGame>
 {
 public:
@@ -34,6 +36,7 @@ public:
 
 private:
 	std::unique_ptr<tewi::Video::Sprite> m_sprite;
+	std::unique_ptr<Player> m_player;
 	std::unique_ptr<tewi::Video::Shader> m_shader;
 
 	tewi::Video::Camera2D m_camera;
