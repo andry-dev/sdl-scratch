@@ -24,8 +24,8 @@ void MainGame::init()
 	const int spriteSize = m_window->getWidth() / 4;
 
 	tewi::Log::info("MainGame::init");
-	m_sprite = std::make_unique<tewi::Video::Sprite>(glm::vec2(0.0f, 0.0f), glm::vec2(spriteSize, spriteSize), "textures/left_standing.png");
-	m_player = std::make_unique<Player>(glm::vec2(0.0f, 0.0f), glm::vec2(spriteSize, spriteSize), "textures/spr.png", m_inputManager, 2.0f);
+	m_sprite = std::make_unique<tewi::Video::Sprite>(glm::vec2(0.0f, 0.0f),  "textures/left_standing.png");
+	m_player = std::make_unique<Player>(glm::vec2(0.0f, 0.0f), "textures/spr.png", m_inputManager, 2.0f);
 	m_shader = std::make_unique<tewi::Video::Shader>("shaders/shader.vert", "shaders/shader.frag");
 
 	m_shader->addAttrib({"vertexPosition", "vertexUV", "vertexTID", "vertexColor"});

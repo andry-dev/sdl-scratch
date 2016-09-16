@@ -9,8 +9,8 @@
 class Player : public tewi::Video::Sprite
 {
 public:
-	Player(const glm::vec2& pos, const glm::vec2& size, const std::string& path, tewi::IO::InputManager& inputMan, float speed)
-		: Sprite(pos, size, path),
+	Player(const glm::vec2& pos, const std::string& path, tewi::IO::InputManager& inputMan, float speed)
+		: Sprite(pos, path),
 		m_speed(speed),
 		m_inputManager(inputMan)
 	{
