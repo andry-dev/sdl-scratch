@@ -18,13 +18,13 @@ public:
 
 	void update()
 	{
-		if (m_inputManager.isKeyPressed(SDLK_d))
+		if (m_inputManager.isKeyDown(SDLK_d))
 			m_pos.y += m_speed;
-		else if (m_inputManager.isKeyPressed(SDLK_e))
+		else if (m_inputManager.isKeyDown(SDLK_e))
 			m_pos.y -= m_speed;
-		if (m_inputManager.isKeyPressed(SDLK_s))
+		if (m_inputManager.isKeyDown(SDLK_s))
 			m_pos.x += m_speed;
-		else if (m_inputManager.isKeyPressed(SDLK_f))
+		else if (m_inputManager.isKeyDown(SDLK_f))
 			m_pos.x -= m_speed;
 	}
 

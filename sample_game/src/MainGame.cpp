@@ -35,7 +35,7 @@ void MainGame::init()
 void MainGame::processInputs()
 {
 
-	if (m_inputManager.isKeyPressed(SDL_BUTTON_LEFT))
+	if (m_inputManager.isKeyDown(SDL_BUTTON_LEFT))
 	{
 		auto mouseCoords = m_inputManager.m_mouseCoords;
 		m_camera.getWorldCoordsFromScreenCoords(mouseCoords);
