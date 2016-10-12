@@ -16,16 +16,16 @@ public:
 	{
 	}
 
-	void update()
+	void update(double delta)
 	{
 		if (m_inputManager.isKeyDown(SDLK_d))
-			m_pos.y += m_speed;
+			m_pos.y += m_speed * delta;
 		else if (m_inputManager.isKeyDown(SDLK_e))
-			m_pos.y -= m_speed;
+			m_pos.y -= m_speed * delta;
 		if (m_inputManager.isKeyDown(SDLK_s))
-			m_pos.x += m_speed;
+			m_pos.x += m_speed * delta;
 		else if (m_inputManager.isKeyDown(SDLK_f))
-			m_pos.x -= m_speed;
+			m_pos.x -= m_speed * delta;
 	}
 
 private:

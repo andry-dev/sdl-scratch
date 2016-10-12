@@ -1,11 +1,13 @@
 #include "MainGame.h"
 
 #include <iostream>
+#include <algorithm>
 #include "Log.h"
 
 #include "Video/Uniform.h"
+#include <SDL2/SDL.h>
 
-#define CAMERA_SPEED 20.0f
+#define CAMERA_SPEED 2.0f
 
 MainGame::MainGame(const std::string& name, int width, int height)
 	: GameCommon(name, width, height),
@@ -21,8 +23,6 @@ MainGame::~MainGame()
 
 void MainGame::init()
 {
-	const int spriteSize = m_window->getWidth() / 4;
-
 	tewi::Log::info("MainGame::init");
 	m_sprite = std::make_unique<tewi::Video::Sprite>(glm::vec2(0.0f, 0.0f),  "textures/left_standing.png");
 	m_player = std::make_unique<Player>(glm::vec2(0.0f, 0.0f), "textures/spr.png", m_inputManager, 2.0f);
@@ -34,7 +34,6 @@ void MainGame::init()
 
 void MainGame::processInputs()
 {
-
 	if (m_inputManager.isKeyDown(SDL_BUTTON_LEFT))
 	{
 		auto mouseCoords = m_inputManager.m_mouseCoords;
@@ -52,22 +51,32 @@ void MainGame::processInputs()
 void MainGame::update()
 {
 	m_timer.update();
-	m_player->update();
+	double totalDelta = m_timer.getDeltaTime(60);
+	tewi::Log::info("Delta: " + std::to_string(totalDelta));
 
-	m_camera.setPosition(m_player->getPosition());
-	m_camera.update();
-
-	for (std::size_t i = 0; i < m_projectiles.size(); )
+	for (int j = 0; j < 6 && totalDelta > 0.0; ++j)
 	{
-		if (m_projectiles[i].update() == true)
+		// THE FUCKING DELTA
+		float deltaTime = std::min(totalDelta, 1.0);
+		m_player->update(deltaTime);
+
+		m_camera.setPosition(m_player->getPosition());
+		m_camera.update();
+
+		for (std::size_t i = 0; i < m_projectiles.size(); )
 		{
-			m_projectiles[i] = m_projectiles.back();
-			m_projectiles.pop_back();
+			if (m_projectiles[i].update(deltaTime) == true)
+			{
+				m_projectiles[i] = m_projectiles.back();
+				m_projectiles.pop_back();
+			}
+			else
+			{
+				++i;
+			}
 		}
-		else
-		{
-			++i;
-		}
+
+		totalDelta -= deltaTime;
 	}
 
 	if (m_player->checkAABB(m_sprite.get()))

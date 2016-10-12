@@ -11,7 +11,7 @@ public:
 	Projectile(const glm::vec2& pos, const glm::vec3& direction, float speed, int lifetime, const std::string& texturePath);
 	~Projectile();
 
-	bool update();
+	bool update(float delta);
 private:
 	
 	glm::vec2 m_direction;

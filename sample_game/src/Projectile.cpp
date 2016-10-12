@@ -12,10 +12,10 @@ Projectile::~Projectile()
 }
 
 
-bool Projectile::update()
+bool Projectile::update(float delta)
 {
-	m_pos += m_direction * m_speed;
-	--m_lifetime;
+	m_pos += m_direction * (m_speed * delta);
+	m_lifetime -= 1 * delta;
 
 	if (m_lifetime <= 0)
 	{
