@@ -6,6 +6,8 @@
 
 #include "IO/InputManager.h"
 
+#include "Log.h"
+
 class Player : public tewi::Video::Sprite
 {
 public:
@@ -18,14 +20,22 @@ public:
 
 	void update(double delta)
 	{
-		if (m_inputManager.isKeyDown(SDLK_d))
-			m_pos.y += m_speed * delta;
-		else if (m_inputManager.isKeyDown(SDLK_e))
-			m_pos.y -= m_speed * delta;
-		if (m_inputManager.isKeyDown(SDLK_s))
-			m_pos.x += m_speed * delta;
-		else if (m_inputManager.isKeyDown(SDLK_f))
-			m_pos.x -= m_speed * delta;
+		if (m_inputManager.isKeyDown(GLFW_KEY_D))
+		{
+			m_renderable.pos.y += m_speed * delta;
+		}
+		else if (m_inputManager.isKeyDown(GLFW_KEY_E))
+		{
+			m_renderable.pos.y -= m_speed * delta;
+		}
+		if (m_inputManager.isKeyDown(GLFW_KEY_S))
+		{
+			m_renderable.pos.x += m_speed * delta;
+		}
+		else if (m_inputManager.isKeyDown(GLFW_KEY_F))
+		{
+			m_renderable.pos.x -= m_speed * delta;
+		}
 	}
 
 private:

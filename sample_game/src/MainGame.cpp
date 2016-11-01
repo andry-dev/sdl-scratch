@@ -5,7 +5,7 @@
 #include "Log.h"
 
 #include "Video/Uniform.h"
-#include <SDL2/SDL.h>
+#include <GLFW/glfw3.h>
 
 #define CAMERA_SPEED 2.0f
 
@@ -34,7 +34,7 @@ void MainGame::init()
 
 void MainGame::processInputs()
 {
-	if (m_inputManager.isKeyDown(SDL_BUTTON_LEFT))
+	if (m_inputManager.isKeyDown(GLFW_MOUSE_BUTTON_LEFT))
 	{
 		auto mouseCoords = m_inputManager.m_mouseCoords;
 		m_camera.getWorldCoordsFromScreenCoords(mouseCoords);
@@ -60,7 +60,7 @@ void MainGame::update()
 		float deltaTime = std::min(totalDelta, 1.0);
 		m_player->update(deltaTime);
 
-		m_camera.setPosition(m_player->getPosition());
+		m_camera.setPosition(m_player->m_renderable.pos);
 		m_camera.update();
 
 		for (std::size_t i = 0; i < m_projectiles.size(); )
@@ -79,12 +79,13 @@ void MainGame::update()
 		totalDelta -= deltaTime;
 	}
 
-	if (m_player->checkAABB(m_sprite.get()))
+	if (m_player->m_collidable.checkAABB(*m_sprite))
 	{
-		tewi::Log::info("Sprites collided");
+
+		//tewi::Log::info("Sprites collided");
 	}
 
-	std::printf("%lu\n", m_timer.getTickRate());
+	tewi::Log::info("Tickrate: " + std::to_string(m_timer.getTickRate()));
 }
 
 void MainGame::draw()
@@ -99,12 +100,12 @@ void MainGame::draw()
 
 	m_batch.begin();
 
-	m_batch.add(m_sprite.get());
-	m_batch.add(m_player.get());
+	m_batch.add(*m_sprite.get());
+	m_batch.add(*m_player.get());
 
 	for (const auto& prj : m_projectiles)
 	{
-		m_batch.add(&prj);
+		m_batch.add(&prj.m_renderable);
 	}
 
 	m_batch.end();
