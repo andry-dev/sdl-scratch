@@ -5,7 +5,9 @@
 #include "Log.h"
 
 #include "Video/Uniform.h"
-#include <GLFW/glfw3.h>
+
+#include <experimental/filesystem>
+
 
 #define CAMERA_SPEED 2.0f
 
@@ -23,6 +25,7 @@ MainGame::~MainGame()
 
 void MainGame::init()
 {
+	/*
 	tewi::Log::info("MainGame::init");
 	m_sprite = std::make_unique<tewi::Video::Sprite>(glm::vec2(0.0f, 0.0f),  "textures/left_standing.png");
 	m_player = std::make_unique<Player>(glm::vec2(0.0f, 0.0f), "textures/spr.png", m_inputManager, 2.0f);
@@ -30,10 +33,12 @@ void MainGame::init()
 
 	m_shader->addAttrib({"vertexPosition", "vertexUV", "vertexTID", "vertexColor"});
 	m_shader->link();
+	*/
 }
 
 void MainGame::processInputs()
 {
+	/*
 	if (m_inputManager.isKeyDown(GLFW_MOUSE_BUTTON_LEFT))
 	{
 		auto mouseCoords = m_inputManager.m_mouseCoords;
@@ -44,12 +49,14 @@ void MainGame::processInputs()
 		direction = glm::normalize(direction);
 
 		m_projectiles.emplace_back(glm::vec3(playerPos.x, playerPos.y, 0),
-									glm::vec3(direction.x, direction.y, 0), 1.0f, 2000, "textures/left_standing.png");
+				glm::vec3(direction.x, direction.y, 0), 1.0f, 2000, "textures/left_standing.png");
 	}
+	*/
 }
 
 void MainGame::update()
 {
+	/*
 	m_timer.update();
 	double totalDelta = m_timer.getDeltaTime(60);
 	tewi::Log::info("Delta: " + std::to_string(totalDelta));
@@ -60,7 +67,7 @@ void MainGame::update()
 		float deltaTime = std::min(totalDelta, 1.0);
 		m_player->update(deltaTime);
 
-		m_camera.setPosition(m_player->m_renderable.pos);
+		m_camera.setPosition(m_player->getRenderable().pos);
 		m_camera.update();
 
 		for (std::size_t i = 0; i < m_projectiles.size(); )
@@ -79,17 +86,19 @@ void MainGame::update()
 		totalDelta -= deltaTime;
 	}
 
-	if (m_player->m_collidable.checkAABB(*m_sprite))
+	if (m_player->getCollidable().checkAABB(*m_sprite))
 	{
 
-		//tewi::Log::info("Sprites collided");
+		tewi::Log::info("Sprites collided");
 	}
 
 	tewi::Log::info("Tickrate: " + std::to_string(m_timer.getTickRate()));
+	*/
 }
 
 void MainGame::draw()
 {
+	/*
 	m_shader->enable();
 
 	const std::vector<int> tex_id_array = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 };
@@ -105,7 +114,7 @@ void MainGame::draw()
 
 	for (const auto& prj : m_projectiles)
 	{
-		m_batch.add(&prj.m_renderable);
+		m_batch.add(prj.getRenderable());
 	}
 
 	m_batch.end();
@@ -113,4 +122,5 @@ void MainGame::draw()
 	m_batch.draw();
 
 	m_shader->disable();
+	*/
 }

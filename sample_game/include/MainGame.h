@@ -23,7 +23,7 @@
 
 #include "Player.h"
 
-class MainGame : public tewi::GameCommon<MainGame>
+class MainGame : public tewi::GameCommon<MainGame, tewi::Video::API::API_TYPE::VULKAN>
 {
 public:
 	MainGame(const std::string& name, int width, int height);
@@ -35,15 +35,17 @@ public:
 	void draw();
 
 private:
+	tewi::Video::Camera2D m_camera;
+	/*
 	std::unique_ptr<tewi::Video::Sprite> m_sprite;
 	std::unique_ptr<Player> m_player;
 	std::unique_ptr<tewi::Video::Shader> m_shader;
 
-	tewi::Video::Camera2D m_camera;
 	tewi::Video::BatchRenderer2D m_batch;
 	tewi::Utils::TickTimer m_timer;
 
 	std::vector<Projectile> m_projectiles;
+	*/
 };
 
 #endif /* MAIN_GAME_H */

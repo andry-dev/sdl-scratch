@@ -15,7 +15,7 @@ public:
 private:
 	
 	glm::vec2 m_direction;
-	int m_lifetime;
+	float m_lifetime;
 	float m_speed;
 };
 
