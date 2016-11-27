@@ -6,10 +6,7 @@
 
 #include "Video/Uniform.h"
 
-#include <experimental/filesystem>
-
-
-#define CAMERA_SPEED 2.0f
+#define CAMERA_SPEED 20.0f
 
 MainGame::MainGame(const std::string& name, int width, int height)
 	: GameCommon(name, width, height),
@@ -25,20 +22,17 @@ MainGame::~MainGame()
 
 void MainGame::init()
 {
-	/*
 	tewi::Log::info("MainGame::init");
-	m_sprite = std::make_unique<tewi::Video::Sprite>(glm::vec2(0.0f, 0.0f),  "textures/left_standing.png");
-	m_player = std::make_unique<Player>(glm::vec2(0.0f, 0.0f), "textures/spr.png", m_inputManager, 2.0f);
-	m_shader = std::make_unique<tewi::Video::Shader>("shaders/shader.vert", "shaders/shader.frag");
+	m_sprite = std::make_unique<tewi::Sprite>(glm::vec2(0.0f, 0.0f),  "textures/left_standing.png");
+	m_player = std::make_unique<Player>(glm::vec2(0.0f, 0.0f), "textures/spr.png", m_inputManager, CAMERA_SPEED);
+	m_shader = std::make_unique<tewi::Shader>("shaders/shader.vert", "shaders/shader.frag");
 
 	m_shader->addAttrib({"vertexPosition", "vertexUV", "vertexTID", "vertexColor"});
 	m_shader->link();
-	*/
 }
 
 void MainGame::processInputs()
 {
-	/*
 	if (m_inputManager.isKeyDown(GLFW_MOUSE_BUTTON_LEFT))
 	{
 		auto mouseCoords = m_inputManager.m_mouseCoords;
@@ -51,12 +45,10 @@ void MainGame::processInputs()
 		m_projectiles.emplace_back(glm::vec3(playerPos.x, playerPos.y, 0),
 				glm::vec3(direction.x, direction.y, 0), 1.0f, 2000, "textures/left_standing.png");
 	}
-	*/
 }
 
 void MainGame::update()
 {
-	/*
 	m_timer.update();
 	double totalDelta = m_timer.getDeltaTime(60);
 	tewi::Log::info("Delta: " + std::to_string(totalDelta));
@@ -86,41 +78,56 @@ void MainGame::update()
 		totalDelta -= deltaTime;
 	}
 
-	if (m_player->getCollidable().checkAABB(*m_sprite))
+	if (tewi::Physics::checkAABB(m_player->getCollidable(), m_sprite->getCollidable()))
 	{
-
 		tewi::Log::info("Sprites collided");
 	}
 
 	tewi::Log::info("Tickrate: " + std::to_string(m_timer.getTickRate()));
-	*/
 }
 
 void MainGame::draw()
 {
-	/*
 	m_shader->enable();
 
 	const std::vector<int> tex_id_array = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 };
 
-	tewi::Video::setUniform(m_shader->getUniformLocation("mySampler"), tex_id_array);
+	tewi::setUniform(m_shader->getUniformLocation("mySampler"), tex_id_array);
 
-	tewi::Video::setUniform(m_shader->getUniformLocation("P"), m_camera.getMatrix());
+	tewi::setUniform(m_shader->getUniformLocation("P"), m_camera.getMatrix());
+	
+	//tewi::BatchRenderer2D<0> m_batch;
 
 	m_batch.begin();
 
 	m_batch.add(*m_sprite.get());
 	m_batch.add(*m_player.get());
 
-	for (const auto& prj : m_projectiles)
+	// Typical C++ bullshit
+	// Or even OOP bullshit in general
+	//for (const auto& prj : m_projectiles)
+	//{
+	//	m_batch.add(prj.getRenderable());
+	//}
+	
+
+	std::vector<tewi::Renderable2D> proj;
+
+	proj.reserve(m_projectiles.size());
+
+	std::for_each(m_projectiles.begin(), m_projectiles.end(), [&proj](auto& elem)
 	{
-		m_batch.add(prj.getRenderable());
-	}
+		proj.push_back(elem.getRenderable());
+	});
+
+	m_batch.add(proj);
+
+	proj.clear();
 
 	m_batch.end();
 
 	m_batch.draw();
 
 	m_shader->disable();
-	*/
+
 }

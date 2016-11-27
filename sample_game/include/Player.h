@@ -8,10 +8,10 @@
 
 #include "Log.h"
 
-class Player : public tewi::Video::Sprite
+class Player : public tewi::Sprite
 {
 public:
-	Player(const glm::vec2& pos, const std::string& path, tewi::IO::InputManager& inputMan, float speed)
+	Player(const glm::vec2& pos, const std::string& path, tewi::InputManager& inputMan, float speed)
 		: Sprite(pos, path),
 		m_speed(speed),
 		m_inputManager(inputMan)
@@ -41,7 +41,7 @@ public:
 private:
 	
 	float m_speed;
-	tewi::IO::InputManager& m_inputManager;
+	tewi::InputManager& m_inputManager;
 };
 
 #endif /* PLAYER_H */

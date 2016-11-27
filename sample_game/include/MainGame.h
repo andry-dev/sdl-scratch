@@ -1,7 +1,6 @@
 #ifndef MAIN_GAME_H
 #define MAIN_GAME_H
 
-
 #include <vector>
 
 #include <string>
@@ -23,7 +22,7 @@
 
 #include "Player.h"
 
-class MainGame : public tewi::GameCommon<MainGame, tewi::Video::API::API_TYPE::VULKAN>
+class MainGame : public tewi::GameCommon<MainGame, tewi::API::API_TYPE::OPENGL>
 {
 public:
 	MainGame(const std::string& name, int width, int height);
@@ -35,17 +34,16 @@ public:
 	void draw();
 
 private:
-	tewi::Video::Camera2D m_camera;
-	/*
-	std::unique_ptr<tewi::Video::Sprite> m_sprite;
+	tewi::Camera2D m_camera;
+	
+	std::unique_ptr<tewi::Sprite> m_sprite;
 	std::unique_ptr<Player> m_player;
-	std::unique_ptr<tewi::Video::Shader> m_shader;
+	std::unique_ptr<tewi::Shader> m_shader;
 
-	tewi::Video::BatchRenderer2D m_batch;
-	tewi::Utils::TickTimer m_timer;
+	tewi::BatchRenderer2D<tewi::API::API_TYPE::OPENGL> m_batch;
+	tewi::TickTimer m_timer;
 
 	std::vector<Projectile> m_projectiles;
-	*/
 };
 
 #endif /* MAIN_GAME_H */
