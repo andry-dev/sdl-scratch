@@ -1,4 +1,4 @@
-#version 400
+#version 400 core
 
 in vec2 fragmentPosition;
 in float fragmentTID;
@@ -7,9 +7,10 @@ in vec2 fragmentUV;
 
 out vec4 color;
 
-uniform sampler2D mySampler[32];
+uniform sampler2D textures[16];
 
 void main() {
-    vec4 textureColor = texture(mySampler[int(fragmentTID - 0.5)], fragmentUV);
+	int tid = int(fragmentTID - 0.5);
+    vec4 textureColor = texture(textures[tid], fragmentUV);
 	color = fragmentColor * textureColor;
 }

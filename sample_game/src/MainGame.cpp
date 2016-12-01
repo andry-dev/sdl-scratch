@@ -92,7 +92,7 @@ void MainGame::draw()
 
 	const std::vector<int> tex_id_array = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 };
 
-	tewi::setUniform(m_shader->getUniformLocation("mySampler"), tex_id_array);
+	tewi::setUniform(m_shader->getUniformLocation("textures"), tex_id_array);
 
 	tewi::setUniform(m_shader->getUniformLocation("P"), m_camera.getMatrix());
 	
@@ -105,10 +105,10 @@ void MainGame::draw()
 
 	// Typical C++ bullshit
 	// Or even OOP bullshit in general
-	//for (const auto& prj : m_projectiles)
-	//{
-	//	m_batch.add(prj.getRenderable());
-	//}
+	// for (const auto& prj : m_projectiles)
+	// {
+	// 	m_batch.add(prj.getRenderable());
+	// }
 	
 
 	std::vector<tewi::Renderable2D> proj;
