@@ -14,7 +14,7 @@
 #include "Utils/TickTimer.h"
 
 #include "Video/Camera2D.h"
-#include "Video/BatchRenderer2D.h"
+#include "Video/BatchRenderer2D.hpp"
 
 #include "IO/InputManager.h"
 

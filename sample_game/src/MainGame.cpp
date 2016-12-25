@@ -95,7 +95,7 @@ void MainGame::draw()
 	tewi::setUniform(m_shader->getUniformLocation("textures"), tex_id_array);
 
 	tewi::setUniform(m_shader->getUniformLocation("P"), m_camera.getMatrix());
-	
+
 	//tewi::BatchRenderer2D<0> m_batch;
 
 	m_batch.begin();
@@ -107,18 +107,18 @@ void MainGame::draw()
 	// Or even OOP bullshit in general
 	// for (const auto& prj : m_projectiles)
 	// {
-	// 	m_batch.add(prj.getRenderable());
+	//	 m_batch.add(prj.getRenderable());
 	// }
-	
+
 
 	std::vector<tewi::Renderable2D> proj;
 
 	proj.reserve(m_projectiles.size());
 
 	std::for_each(m_projectiles.begin(), m_projectiles.end(), [&proj](auto& elem)
-	{
-		proj.push_back(elem.getRenderable());
-	});
+			{
+			proj.push_back(elem.getRenderable());
+			});
 
 	m_batch.add(proj);
 
@@ -129,5 +129,4 @@ void MainGame::draw()
 	m_batch.draw();
 
 	m_shader->disable();
-
 }

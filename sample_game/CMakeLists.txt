@@ -2,9 +2,11 @@ cmake_minimum_required(VERSION 2.8)
 project(OpenGL_test)
 
 if(MSVC)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /std:c++latest")
 else()
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pipe")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pipe -Wno-pragma-once-outside-header -fno-rtti")
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -flto -fuse-linker-plugin")
+	set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -flto -fuse-linker-plugin")
 endif()
 
 set(SRC
@@ -17,7 +19,9 @@ include_directories(include)
 add_executable(${PROJECT_NAME} ${SRC})
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 14)
 
-message(STATUS "The Flags are: ${CMAKE_CXX_FLAGS}")
+message(STATUS "[Game] Common Flags are: ${CMAKE_CXX_FLAGS}")
+message(STATUS "[Game] Debug Flags are: ${CMAKE_CXX_FLAGS_DEBUG}")
+message(STATUS "[Game] Release Flags are: ${CMAKE_CXX_FLAGS_RELEASE}")
 
 include_directories(${CMAKE_SOURCE_DIR}/tewi/include)
 
