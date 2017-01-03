@@ -8,31 +8,38 @@
 
 #define CAMERA_SPEED 20.0f
 
-MainGame::MainGame(const std::string& name, int width, int height)
-	: GameCommon(name, width, height),
+template <int APINum>
+MainGame<APINum>::MainGame(const std::string& name, int width, int height)
+	: tewi::GameCommon<MainGame<APINum>, APINum>(name, width, height),
 	m_camera(width, height)
 {
-	tewi::Log::info("MainGame::MainGame");
+	tewi::Log::info("MainGame<APINum>::MainGame");
 }
 
-MainGame::~MainGame()
+template <int APINum>
+MainGame<APINum>::~MainGame()
 {
-	tewi::Log::info("MainGame::~MainGame");
+	tewi::Log::info("MainGame<APINum>::~MainGame");
 }
 
-void MainGame::init()
+template <int APINum>
+void MainGame<APINum>::init()
 {
-	tewi::Log::info("MainGame::init");
+#ifdef WORKING_IMPL
+	tewi::Log::info("MainGame<APINum>::init");
 	m_sprite = std::make_unique<tewi::Sprite>(glm::vec2(0.0f, 0.0f),  "textures/left_standing.png");
 	m_player = std::make_unique<Player>(glm::vec2(0.0f, 0.0f), "textures/spr.png", m_inputManager, CAMERA_SPEED);
 	m_shader = std::make_unique<tewi::Shader>("shaders/shader.vert", "shaders/shader.frag");
 
 	m_shader->addAttrib({"vertexPosition", "vertexUV", "vertexTID", "vertexColor"});
 	m_shader->link();
+#endif
 }
 
-void MainGame::processInputs()
+template <int APINum>
+void MainGame<APINum>::processInputs()
 {
+#ifdef WORKING_IMPL
 	if (m_inputManager.isKeyDown(GLFW_MOUSE_BUTTON_LEFT))
 	{
 		auto mouseCoords = m_inputManager.m_mouseCoords;
@@ -45,10 +52,13 @@ void MainGame::processInputs()
 		m_projectiles.emplace_back(glm::vec3(playerPos.x, playerPos.y, 0),
 				glm::vec3(direction.x, direction.y, 0), 1.0f, 2000, "textures/left_standing.png");
 	}
+#endif
 }
 
-void MainGame::update()
+template <int APINum>
+void MainGame<APINum>::update()
 {
+#ifdef WORKING_IMPL
 	m_timer.update();
 	double totalDelta = m_timer.getDeltaTime(60);
 	tewi::Log::info("Delta: " + std::to_string(totalDelta));
@@ -84,10 +94,14 @@ void MainGame::update()
 	}
 
 	tewi::Log::info("Tickrate: " + std::to_string(m_timer.getTickRate()));
+#endif
 }
 
-void MainGame::draw()
+template <int APINum>
+void MainGame<APINum>::draw()
 {
+#ifdef WORKING_IMPL
+
 	m_shader->enable();
 
 	const std::vector<int> tex_id_array = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 };
@@ -129,4 +143,5 @@ void MainGame::draw()
 	m_batch.draw();
 
 	m_shader->disable();
+#endif
 }

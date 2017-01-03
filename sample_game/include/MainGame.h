@@ -22,7 +22,8 @@
 
 #include "Player.h"
 
-class MainGame : public tewi::GameCommon<MainGame, tewi::API::API_TYPE::OPENGL>
+template <int APINum>
+class MainGame : public tewi::GameCommon<MainGame<APINum>, APINum>
 {
 public:
 	MainGame(const std::string& name, int width, int height);
@@ -36,14 +37,18 @@ public:
 private:
 	tewi::Camera2D m_camera;
 	
-	std::unique_ptr<tewi::Sprite> m_sprite;
+#ifdef WORKING_IMPL
+	std::unique_ptr<tewi::Sprite<APINum>> m_sprite;
 	std::unique_ptr<Player> m_player;
 	std::unique_ptr<tewi::Shader> m_shader;
 
-	tewi::BatchRenderer2D<tewi::API::API_TYPE::OPENGL> m_batch;
+	tewi::BatchRenderer2D<APINum> m_batch;
 	tewi::TickTimer m_timer;
 
 	std::vector<Projectile> m_projectiles;
+#endif
 };
+
+#include "MainGame.hxx"
 
 #endif /* MAIN_GAME_H */
