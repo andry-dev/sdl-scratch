@@ -9,7 +9,8 @@
 #include "GameCommon.hpp"
 
 #include "Video/Sprite.h"
-#include "Video/Shader.h"
+#include "Video/API/Shader.hpp"
+#include "Platform/OpenGL/Shader.hpp"
 
 #include "Utils/TickTimer.h"
 
@@ -40,7 +41,7 @@ private:
 #ifdef WORKING_IMPL
 	std::unique_ptr<tewi::Sprite<APINum>> m_sprite;
 	std::unique_ptr<Player> m_player;
-	std::unique_ptr<tewi::Shader> m_shader;
+	std::unique_ptr<tewi::Shader<APINum>> m_shader;
 
 	tewi::BatchRenderer2D<APINum> m_batch;
 	tewi::TickTimer m_timer;

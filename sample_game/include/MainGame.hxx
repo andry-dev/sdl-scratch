@@ -27,7 +27,7 @@ void MainGame<APINum>::init()
 {
 #ifdef WORKING_IMPL
 	tewi::Log::info("MainGame<APINum>::init");
-	m_sprite = std::make_unique<tewi::Sprite>(glm::vec2(0.0f, 0.0f),  "textures/left_standing.png");
+	m_sprite = std::make_unique<tewi::Sprite<APINum>>(glm::vec2(0.0f, 0.0f),  "textures/left_standing.png");
 	m_player = std::make_unique<Player>(glm::vec2(0.0f, 0.0f), "textures/spr.png", m_inputManager, CAMERA_SPEED);
 	m_shader = std::make_unique<tewi::Shader>("shaders/shader.vert", "shaders/shader.frag");
 
