@@ -1,5 +1,4 @@
-#ifndef MAIN_GAME_H
-#define MAIN_GAME_H
+#pragma once
 
 #include <vector>
 
@@ -8,22 +7,22 @@
 
 #include "GameCommon.hpp"
 
-#include "Video/Sprite.h"
-#include "Video/API/Shader.hpp"
+#include "Video/Shader.hpp"
 #include "Platform/OpenGL/Shader.hpp"
-
+#include "Video/Renderer2D.hpp"
+#include "Video/BatchRenderer2D.hpp"
+#include "Platform/OpenGL/BatchRenderer2D.hpp"
+#include "Video/Camera2D.h"
+#include "Video/Sprite.h"
+#include "IO/InputManager.h"
 #include "Utils/TickTimer.h"
 
-#include "Video/Camera2D.h"
-#include "Video/BatchRenderer2D.hpp"
-
-#include "IO/InputManager.h"
-
 #include "Projectile.h"
-
 #include "Player.h"
 
-template <int APINum>
+#define WORKING_IMPL
+
+template <typename APINum>
 class MainGame : public tewi::GameCommon<MainGame<APINum>, APINum>
 {
 public:
@@ -36,14 +35,16 @@ public:
 	void draw();
 
 private:
+
 	tewi::Camera2D m_camera;
+	tewi::API::Device<APINum> m_device;
 	
 #ifdef WORKING_IMPL
-	std::unique_ptr<tewi::Sprite<APINum>> m_sprite;
-	std::unique_ptr<Player> m_player;
-	std::unique_ptr<tewi::Shader<APINum>> m_shader;
+	// std::unique_ptr<tewi::Sprite<APINum>> m_sprite;
+	// std::unique_ptr<Player> m_player;
+	std::unique_ptr<tewi::ShaderProgram<APINum>> m_shader;
 
-	tewi::BatchRenderer2D<APINum> m_batch;
+	tewi::Renderer2D<APINum, tewi::BatchRenderer2D> m_batch;
 	tewi::TickTimer m_timer;
 
 	std::vector<Projectile> m_projectiles;
@@ -51,5 +52,3 @@ private:
 };
 
 #include "MainGame.hxx"
-
-#endif /* MAIN_GAME_H */
