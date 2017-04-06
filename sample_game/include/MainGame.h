@@ -40,14 +40,16 @@ private:
 	tewi::API::Device<APINum> m_device;
 	
 #ifdef WORKING_IMPL
-	// std::unique_ptr<tewi::Sprite<APINum>> m_sprite;
-	// std::unique_ptr<Player> m_player;
+	std::unique_ptr<tewi::Sprite<APINum>> m_sprite;
+	std::unique_ptr<Player<APINum>> m_player;
+	std::unique_ptr<tewi::Shader<APINum, tewi::VertexShader>> m_vertShader;
+	std::unique_ptr<tewi::Shader<APINum, tewi::FragmentShader>> m_fragShader;
 	std::unique_ptr<tewi::ShaderProgram<APINum>> m_shader;
 
 	tewi::Renderer2D<APINum, tewi::BatchRenderer2D> m_batch;
 	tewi::TickTimer m_timer;
 
-	std::vector<Projectile> m_projectiles;
+	std::vector<Projectile<APINum>> m_projectiles;
 #endif
 };
 

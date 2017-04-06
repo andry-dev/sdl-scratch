@@ -1,4 +1,4 @@
-#version 400 core
+#version 400
 
 in vec2 fragmentPosition;
 in float fragmentTID;

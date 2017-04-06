@@ -5,7 +5,7 @@
 
 #include "MainGame.h"
 
-int main(int argc, char** argv)
+int main(int argc, const char** argv)
 {
 	int res = 0;
 	std::cout << "Choose API, 1 = OGL, 2 = Vk\n";

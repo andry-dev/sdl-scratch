@@ -8,33 +8,34 @@
 
 #include "Log.h"
 
-class Player : public tewi::Sprite
+template <typename APIType>
+class Player : public tewi::Sprite<APIType>
 {
 public:
 	Player(const glm::vec2& pos, const std::string& path, tewi::InputManager& inputMan, float speed)
-		: Sprite(pos, path),
+		: tewi::Sprite<APIType>(pos, path),
 		m_speed(speed),
 		m_inputManager(inputMan)
 	{
 	}
 
-	void update(double delta)
+	void update(float delta)
 	{
 		if (m_inputManager.isKeyDown(GLFW_KEY_D))
 		{
-			m_renderable.pos.y += m_speed * delta;
+			this->m_renderable.pos.y += m_speed * delta;
 		}
 		else if (m_inputManager.isKeyDown(GLFW_KEY_E))
 		{
-			m_renderable.pos.y -= m_speed * delta;
+			this->m_renderable.pos.y -= m_speed * delta;
 		}
 		if (m_inputManager.isKeyDown(GLFW_KEY_S))
 		{
-			m_renderable.pos.x += m_speed * delta;
+			this->m_renderable.pos.x += m_speed * delta;
 		}
 		else if (m_inputManager.isKeyDown(GLFW_KEY_F))
 		{
-			m_renderable.pos.x -= m_speed * delta;
+			this->m_renderable.pos.x -= m_speed * delta;
 		}
 	}
 

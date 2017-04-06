@@ -3,6 +3,8 @@ project(OpenGL_test)
 
 if(MSVC)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /std:c++latest /showIncludes")
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /Ob2 /Ot /GR- /GL /sdl- /LTCG")
+	set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /LTCG")
 else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pipe -Wno-pragma-once-outside-header -fno-rtti")
 	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -flto -fuse-linker-plugin")
@@ -10,8 +12,7 @@ else()
 endif()
 
 set(SRC
-	src/main.cpp
-	src/Projectile.cpp)
+	src/main.cpp)
 
 include_directories(include)
 
@@ -21,10 +22,17 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 14)
 message(STATUS "[Game] Common Flags are: ${CMAKE_CXX_FLAGS}")
 message(STATUS "[Game] Debug Flags are: ${CMAKE_CXX_FLAGS_DEBUG}")
 message(STATUS "[Game] Release Flags are: ${CMAKE_CXX_FLAGS_RELEASE}")
+message(STATUS "[Game] Linker Flags are: ${CMAKE_EXE_LINKER_FLAGS_RELEASE}")
 
 include_directories(${CMAKE_SOURCE_DIR}/tewi/include)
 
 if(WIN32)
+	include_directories(${CMAKE_SOURCE_DIR}/tewi/lib/msvc/glew/include)
+	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+	"${CMAKE_SOURCE_DIR}/tewi/lib/msvc/glew/bin/Release/x64/glew32.dll"
+	$<TARGET_FILE_DIR:${PROJECT_NAME}>)
+
 	include_directories(${CMAKE_SOURCE_DIR}/tewi/lib/msvc/glew/include)
 	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different

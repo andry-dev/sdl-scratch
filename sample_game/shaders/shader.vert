@@ -1,4 +1,4 @@
-#version 450 core
+#version 400
 
 in vec2 vertexPosition;
 in float vertexTID;
@@ -21,6 +21,5 @@ void main() {
     fragmentColor = vertexColor;
     
     fragmentUV = vec2(vertexUV.x, 1.0 - vertexUV.y);
-
-	fragmentTID = vertexTID;
+    fragmentTID = vertexTID;
 }
