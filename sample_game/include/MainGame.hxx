@@ -1,6 +1,6 @@
 #include "MainGame.h"
 
-#undef min(x, y)
+#undef min
 
 #include <iostream>
 #include <algorithm>
@@ -44,7 +44,7 @@ void MainGame<APINum>::init()
 	}};
 
 	m_shader = std::make_unique<tewi::ShaderProgram<APINum>>(
-		attribs, tewi::make_shader_pack(vert, frag)
+		attribs, vert, frag
 	);
 }
 
