@@ -29,14 +29,17 @@ template <typename APINum>
 void MainGame<APINum>::init()
 {
 	tewi::Log::info("MainGame<APINum>::init");
-	m_sprite = std::make_unique<tewi::Sprite<APINum>>(glm::vec2(0.0f, 0.0f),  "textures/left_standing.png");
-	m_player = std::make_unique<Player<APINum>>(glm::vec2(0.0f, 0.0f), "textures/spr.png", this->m_inputManager, CAMERA_SPEED);
+	m_sprite = std::make_unique<tewi::Sprite<APINum>>(
+			glm::vec2(0.0f, 0.0f), "textures/left_standing.png");
+
+	m_player = std::make_unique<Player<APINum>>
+		(glm::vec2(0.0f, 0.0f), "textures/spr.png",
+		 this->getInputManager(), CAMERA_SPEED);
 
 	tewi::Shader<APINum, tewi::VertexShader> vert(m_device, "shaders/shader");
 	tewi::Shader<APINum, tewi::FragmentShader> frag(m_device, "shaders/shader");
 
-	const std::array<const char*, 4> attribs =
-	{{
+	constexpr std::array<const char*, 4> attribs {{
 		"vertexPosition",
 		"vertexUV",
 		"vertexTID",
@@ -51,9 +54,9 @@ void MainGame<APINum>::init()
 template <typename APINum>
 void MainGame<APINum>::processInputs()
 {
-	if (this->m_inputManager.isKeyDown(GLFW_MOUSE_BUTTON_LEFT))
+	if (this->getInputManager().isKeyDown(GLFW_MOUSE_BUTTON_LEFT))
 	{
-		auto mouseCoords = this->m_inputManager.m_mouseCoords;
+		auto mouseCoords = this->getInputManager().m_mouseCoords;
 		m_camera.getWorldCoordsFromScreenCoords(mouseCoords);
 
 		glm::vec2 playerPos(0.0f);
@@ -146,5 +149,5 @@ void MainGame<APINum>::draw()
 
 	m_shader->disable();
 
-	tewi::Log::info("Tickrate: " + std::to_string(this->m_tickTimer.getTickRate()));
+	tewi::Log::info("Tickrate: " + std::to_string(this->getTimer().getTickRate()));
 }
