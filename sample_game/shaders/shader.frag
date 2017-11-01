@@ -1,9 +1,9 @@
 #version 400
 
 in vec2 fragmentPosition;
+in vec2 fragmentUV;
 in float fragmentTID;
 in vec4 fragmentColor;
-in vec2 fragmentUV;
 
 out vec4 color;
 

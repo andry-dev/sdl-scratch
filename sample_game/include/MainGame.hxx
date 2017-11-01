@@ -7,14 +7,15 @@
 #include "Log.h"
 
 #include "Video/Uniform.h"
+#include <glm/gtc/matrix_transform.hpp>
 
 #define CAMERA_SPEED 20.0f
 
 
 template <typename APINum>
 MainGame<APINum>::MainGame(const std::string& name, int width, int height)
-	: tewi::GameCommon<MainGame<APINum>, APINum>(name, width, height),
-	m_camera(width, height)
+	: tewi::GameCommon<MainGame<APINum>, APINum>(name, width, height)
+	, m_camera(width, height), m_shader(m_batch.createShaderProgram())
 {
 	tewi::Log::info("MainGame<APINum>::MainGame");
 }
@@ -35,20 +36,6 @@ void MainGame<APINum>::init()
 	m_player = std::make_unique<Player<APINum>>
 		(glm::vec2(0.0f, 0.0f), "textures/spr.png",
 		 this->getInputManager(), CAMERA_SPEED);
-
-	tewi::Shader<APINum, tewi::VertexShader> vert(m_device, "shaders/shader");
-	tewi::Shader<APINum, tewi::FragmentShader> frag(m_device, "shaders/shader");
-
-	constexpr std::array<const char*, 4> attribs {{
-		"vertexPosition",
-		"vertexUV",
-		"vertexTID",
-		"vertexColor"
-	}};
-
-	m_shader = std::make_unique<tewi::ShaderProgram<APINum>>(
-		attribs, vert, frag
-	);
 }
 
 template <typename APINum>
@@ -110,26 +97,24 @@ template <typename APINum>
 void MainGame<APINum>::draw()
 {
 
-	m_shader->enable();
+	m_shader.enable();
 
 	const std::vector<int> tex_id_array = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 };
 
-	tewi::setUniform(m_shader->getUniformLocation("textures"), tex_id_array);
+	tewi::setUniform(m_shader.getUniformLocation("textures"), tex_id_array);
 
-	tewi::setUniform(m_shader->getUniformLocation("P"), m_camera.getMatrix());
+    glm::mat4 modelMatrix(1.0f);
+    glm::mat4 projMatrix(1.0f);
+    auto cameraMatrix = m_camera.getMatrix();
+
+	tewi::setUniform(m_shader.getUniformLocation("ml_matrix"), modelMatrix);
+	tewi::setUniform(m_shader.getUniformLocation("vw_matrix"), cameraMatrix);
+	tewi::setUniform(m_shader.getUniformLocation("pr_matrix"), projMatrix);
 
 	m_batch.begin();
 
-	m_batch.add(*m_sprite.get());
-	m_batch.add(*m_player.get());
-
-	// Typical C++ bullshit
-	// Or even OOP bullshit in general
-	// for (const auto& prj : m_projectiles)
-	// {
-	//	 m_batch.add(prj.getRenderable());
-	// }
-
+	m_batch.add(m_sprite->getRenderable());
+	m_batch.add(m_player->getRenderable());
 
 	std::vector<tewi::Renderable2D<APINum>> proj;
 	proj.reserve(m_projectiles.size());
@@ -147,7 +132,7 @@ void MainGame<APINum>::draw()
 
 	m_batch.draw();
 
-	m_shader->disable();
+	m_shader.disable();
 
 	tewi::Log::info("Tickrate: " + std::to_string(this->getTimer().getTickRate()));
 }
