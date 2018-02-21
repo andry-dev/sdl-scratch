@@ -19,9 +19,7 @@ void main() {
     gl_Position = (pr_matrix * vw_matrix * ml_matrix * vec4(vertexPosition, 0.0, 1.0));
 
     fragmentPosition = vertexPosition;
-
     fragmentColor = vertexColor;
-
     fragmentUV = vec2(vertexUV.x, 1.0 - vertexUV.y);
     fragmentTID = vertexTID;
 }
