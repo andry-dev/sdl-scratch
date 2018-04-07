@@ -1,9 +1,8 @@
-#ifndef PROJECTILE_H
-#define PROJECTILE_H
+#pragma once
 
 #include <glm/glm.hpp>
 
-#include "Video/Sprite.h"
+#include "tewi/Video/Sprite.h"
 
 template <typename APIType>
 class Projectile : public tewi::Sprite<APIType>
@@ -34,5 +33,3 @@ private:
     float m_lifetime;
     float m_speed;
 };
-
-#endif /* PROJECTILE_H */

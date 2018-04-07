@@ -10,7 +10,7 @@ out vec4 color;
 uniform sampler2D textures[16];
 
 void main() {
-	int tid = int(fragmentTID - 0.5);
+    int tid = int(fragmentTID - 0.5);
     vec4 textureColor = texture(textures[tid], fragmentUV);
-	color = fragmentColor * textureColor;
+    color = fragmentColor * textureColor;
 }

@@ -4,18 +4,19 @@
 
 #include <iostream>
 #include <algorithm>
-#include "Log.h"
-
-#include "Video/Uniform.h"
 #include <glm/gtc/matrix_transform.hpp>
 
-#define CAMERA_SPEED 20.0f
+#include "tewi/Utils/Log.h"
+#include "tewi/Video/Uniform.h"
+
+
+constexpr float g_cameraSpeed = 20.0f;
 
 
 template <typename APINum>
 MainGame<APINum>::MainGame(const std::string& name, int width, int height)
         : tewi::GameCommon<MainGame<APINum>, APINum>(name, width, height)
-        , m_camera(width, height), m_shader(m_batch.createShaderProgram())
+        , m_camera(width, height)
 {
     tewi::Log::info("MainGame<APINum>::MainGame");
 }
@@ -35,7 +36,24 @@ void MainGame<APINum>::init()
 
     m_player = std::make_unique<Player<APINum>>
             (glm::vec2(0.0f, 0.0f), "textures/spr.png",
-             this->getInputManager(), CAMERA_SPEED);
+             this->getInputManager(), g_cameraSpeed);
+
+
+    constexpr const std::array<gsl::string_span, 4> attribs
+    {
+        "vertexPosition",
+        "vertexUV",
+        "vertexTID",
+        "vertexColor"
+    };
+
+    tewi::Shader<APINum, tewi::VertexShader> vert(m_device, "shaders/shader.vert");
+    tewi::Shader<APINum, tewi::FragmentShader> frag(m_device, "shaders/shader.frag");
+
+    m_shader = std::make_unique<tewi::ShaderProgram<APINum>>(
+        attribs, vert, frag
+    );
+
 }
 
 template <typename APINum>
@@ -87,7 +105,6 @@ void MainGame<APINum>::update()
 
     if (tewi::Physics::checkAABB(m_player->getCollidable(), m_sprite->getCollidable()))
     {
-        tewi::Log::info("Sprites collided");
     }
 
 }
@@ -96,7 +113,7 @@ template <typename APINum>
 void MainGame<APINum>::draw()
 {
 
-    m_shader.enable();
+    m_shader->enable();
 
     constexpr std::array<int, 22> tex_id_array = {
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
@@ -104,38 +121,27 @@ void MainGame<APINum>::draw()
         21
     };
 
-    tewi::setUniform(m_shader.getUniformLocation("textures"), tex_id_array);
+    tewi::setUniform(m_shader->getUniformLocation("textures"), tex_id_array);
 
-    glm::mat4 modelMatrix(1.0f);
-    glm::mat4 projMatrix(1.0f);
     auto cameraMatrix = m_camera.getMatrix();
 
-    tewi::setUniform(m_shader.getUniformLocation("ml_matrix"), modelMatrix);
-    tewi::setUniform(m_shader.getUniformLocation("vw_matrix"), cameraMatrix);
-    tewi::setUniform(m_shader.getUniformLocation("pr_matrix"), projMatrix);
+    tewi::setUniform(m_shader->getUniformLocation("vw_matrix"), cameraMatrix);
 
     m_batch.begin();
 
     m_batch.add(m_sprite->getRenderable());
     m_batch.add(m_player->getRenderable());
 
-    std::vector<tewi::Renderable2D<APINum>> proj;
-    proj.reserve(m_projectiles.size());
-
     for (const auto& elem : m_projectiles)
     {
-            proj.push_back(elem.getRenderable());
+        m_batch.add(elem.getRenderable());
     }
-
-    m_batch.add(proj);
-
-    proj.clear();
 
     m_batch.end();
 
     m_batch.draw();
 
-    m_shader.disable();
+    m_shader->disable();
 
     tewi::Log::info("Tickrate: " + std::to_string(this->getTimer().getTickRate()));
 }

@@ -1,12 +1,12 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "Video/Sprite.h"
-#include "Physics/Collidable2D.h"
+#include "tewi/Video/Sprite.h"
+#include "tewi/Physics/Collidable2D.h"
 
-#include "IO/InputManager.h"
+#include "tewi/IO/InputManager.h"
 
-#include "Log.h"
+#include "tewi/Utils/Log.h"
 
 template <typename APIType>
 class Player : public tewi::Sprite<APIType>

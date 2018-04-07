@@ -5,17 +5,20 @@
 #include <string>
 #include <memory>
 
-#include "GameCommon.hpp"
+#include "tewi/GameCommon.hpp"
 
-#include "Video/Shader.hpp"
-#include "Platform/OpenGL/Shader.hpp"
-#include "Video/Renderer2D.hpp"
-#include "Video/BatchRenderer2D.hpp"
-#include "Platform/OpenGL/BatchRenderer2D.hpp"
-#include "Video/Camera2D.h"
-#include "Video/Sprite.h"
-#include "IO/InputManager.h"
-#include "Utils/TickTimer.h"
+#include "tewi/IO/InputManager.h"
+
+#include "tewi/Platform/OpenGL/Shader.hpp"
+#include "tewi/Platform/OpenGL/BatchRenderer2D.hpp"
+
+#include "tewi/Utils/TickTimer.h"
+
+#include "tewi/Video/Shader.hpp"
+#include "tewi/Video/Renderer2D.hpp"
+#include "tewi/Video/BatchRenderer2D.hpp"
+#include "tewi/Video/Camera2D.h"
+#include "tewi/Video/Sprite.h"
 
 #include "Projectile.h"
 #include "Player.h"
@@ -42,7 +45,7 @@ private:
 #ifdef WORKING_IMPL
 	std::unique_ptr<tewi::Sprite<APINum>> m_sprite;
 	std::unique_ptr<Player<APINum>> m_player;
-	tewi::ShaderProgram<APINum> m_shader;
+        std::unique_ptr<tewi::ShaderProgram<APINum>> m_shader;
 
 	tewi::Renderer2D<APINum, tewi::BatchRenderer2D> m_batch;
 	tewi::TickTimer m_timer;

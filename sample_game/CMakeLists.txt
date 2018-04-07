@@ -1,5 +1,8 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.9)
+cmake_policy(SET CMP0069 NEW)
 project(OpenGL_test)
+
+include(CheckIPOSupported)
 
 set(SRC
 	src/main.cpp)
@@ -12,15 +15,22 @@ set_target_properties(${PROJECT_NAME}
 	CXX_STANDARD 14
 	CXX_STANDARD_REQUIRED ON)
 
+check_ipo_supported(RESULT lto_supported)
+if (lto_supported)
+    set_target_properties(${PROJECT_NAME}
+        PROPERTIES
+        INTERPROCEDURAL_OPTIMIZATION TRUE)
+endif()
+
 if(MSVC)
 	target_compile_options(${PROJECT_NAME}
 		PRIVATE
-		/W4 /std:c++latest)
+        /W4 /std:c++latest /permissive- /GR-)
 
 	# Release
-# 	target_compile_options(${PROJECT_NAME} 
-# 		PRIVATE
-# 		$<$<CONFIG:RELEASE>:/O2 /Ob2 /Ot /GR- /GL /sdl- /LTCG)
+ 	target_compile_options(${PROJECT_NAME} 
+ 		PRIVATE
+ 		$<$<CONFIG:RELEASE>:/Ob2 /Ot /GL /sdl- /LTCG>)
 else()
 	target_compile_options(${PROJECT_NAME}
 		PRIVATE
@@ -30,23 +40,6 @@ else()
 	target_compile_options(${PROJECT_NAME}
 		PRIVATE
 		$<$<CONFIG:RELEASE>:-O3>)
-
-	if (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" AND
-		${CMAKE_CXX_COMPILER_VERSION} VERSION_EQUAL 5.0.0)
-			message(WARNING "[game] You're using Clang trunk, -flto disabled")
-	else()
-		target_compile_options(${PROJECT_NAME}
-			PRIVATE
-			$<$<CONFIG:RELEASE>:-flto>)
-
-		target_compile_options(tewi
-			PRIVATE
-			$<$<CONFIG:RELEASE>:-flto>)
-
-		target_compile_options(glfw
-			PRIVATE
-			$<$<CONFIG:RELEASE>:-flto>)
-	endif()
 endif()
 
 

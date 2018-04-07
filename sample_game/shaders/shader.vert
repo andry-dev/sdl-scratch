@@ -10,13 +10,11 @@ out float fragmentTID;
 out vec4 fragmentColor;
 out vec2 fragmentUV;
 
-uniform mat4 ml_matrix;
 uniform mat4 vw_matrix;
-uniform mat4 pr_matrix;
 
 void main() {
     //Set the x,y position on the screen
-    gl_Position = (pr_matrix * vw_matrix * ml_matrix * vec4(vertexPosition, 0.0, 1.0));
+    gl_Position = (vw_matrix *  vec4(vertexPosition, 0.0, 1.0));
 
     fragmentPosition = vertexPosition;
     fragmentColor = vertexColor;
