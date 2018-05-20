@@ -17,86 +17,115 @@
 #include <optional>
 
 constexpr auto g_vertsrc = R"(
-    #version 430
+    #version 410 core
+    #extension GL_ARB_explicit_uniform_location : enable
     layout (location = 0) in vec3 Pos;
     layout (location = 1) in vec2 Uv;
+    layout (location = 2) in vec4 Color;
 
     uniform mat4 MVP;
+
+    out vec4 fragColor;
 
     void main()
     {
         gl_Position = MVP * vec4(Pos, 1);
+        fragColor = Color;
     }
 
 )";
 
-constexpr std::array<asl::string_view, 1> g_vertlocations {
-    "Pos"
+constexpr std::array<asl::string_view, 3> g_vertlocations {
+    "Pos",
+    "Uv",
+    "Color"
 };
 
 constexpr auto g_fragsrc = R"(
-    #version 430
-    out vec3 color;
+    #version 410 core
+    in vec4 fragColor;
+    out vec4 color;
 
     void main()
     {
-        color = vec3(1, 0, 0);
+        color = fragColor;
     }
 )";
+
+struct Color
+{
+    asl::u8 r;
+    asl::u8 g;
+    asl::u8 b;
+    asl::u8 a;
+};
 
 struct Vertex3D
 {
     glm::vec3 position;
     glm::vec2 uv;
+    Color color;
 };
 
-const std::array<Vertex3D, 36> g_triangle_data {
 #if 0
-    Vertex3D{{ -1.0f, -1.0f, 0.0f }},
-    Vertex3D{{ 1.0f, -1.0f, 0.0f }},
-    Vertex3D{{ 0.0f, 1.0f, 0.0f }},
+const std::array<Vertex3D, 8> g_triangle_data {
 #else
-    Vertex3D{ { -0.5f, -0.5f, -0.5f },  { 0.0f, 0.0f } },
-    Vertex3D{ {  0.5f, -0.5f, -0.5f },  { 1.0f, 0.0f } },
-    Vertex3D{ {  0.5f,  0.5f, -0.5f },  { 1.0f, 1.0f } },
-    Vertex3D{ {  0.5f,  0.5f, -0.5f },  { 1.0f, 1.0f } },
-    Vertex3D{ { -0.5f,  0.5f, -0.5f },  { 0.0f, 1.0f } },
-    Vertex3D{ { -0.5f, -0.5f, -0.5f },  { 0.0f, 0.0f } },
+const std::array<Vertex3D, 36> g_triangle_data {
+#endif
+#if 0
+    Vertex3D{ { -0.5f, -0.5f, -0.5f }, { 0.0f, 0.0f }, { 55, 120, 0, 255 } },
+    Vertex3D{ { -0.5f,  0.5f, -0.5f }, { 0.0f, 1.0f }, { 55, 120, 0, 255 } },
+    Vertex3D{ {  0.5f, -0.5f, -0.5f }, { 1.0f, 0.0f }, { 55, 120, 0, 255 } },
+    Vertex3D{ {  0.5f,  0.5f, -0.5f }, { 1.0f, 1.0f }, { 55, 120, 0, 255 } },
 
-    Vertex3D{ { -0.5f, -0.5f,  0.5f },  { 0.0f, 0.0f } },
-    Vertex3D{ {  0.5f, -0.5f,  0.5f },  { 1.0f, 0.0f } },
-    Vertex3D{ {  0.5f,  0.5f,  0.5f },  { 1.0f, 1.0f } },
-    Vertex3D{ {  0.5f,  0.5f,  0.5f },  { 1.0f, 1.0f } },
-    Vertex3D{ { -0.5f,  0.5f,  0.5f },  { 0.0f, 1.0f } },
-    Vertex3D{ { -0.5f, -0.5f,  0.5f },  { 0.0f, 0.0f } },
+    Vertex3D{ {  0.5f, -0.5f,  0.5f }, { 1.0f, 0.0f }, { 255, 0, 0, 255 } },
+    Vertex3D{ {  0.5f,  0.5f,  0.5f }, { 1.0f, 1.0f }, { 255, 0, 0, 255 } },
 
-    Vertex3D{ { -0.5f,  0.5f,  0.5f },  { 1.0f, 0.0f } },
-    Vertex3D{ { -0.5f,  0.5f, -0.5f },  { 1.0f, 1.0f } },
-    Vertex3D{ { -0.5f, -0.5f, -0.5f },  { 0.0f, 1.0f } },
-    Vertex3D{ { -0.5f, -0.5f, -0.5f },  { 0.0f, 1.0f } },
-    Vertex3D{ { -0.5f, -0.5f,  0.5f },  { 0.0f, 0.0f } },
-    Vertex3D{ { -0.5f,  0.5f,  0.5f },  { 1.0f, 0.0f } },
+    Vertex3D{ {  0.5f, -0.0f, -0.5 }, { 1.0f, 0.0f }, { 0, 255, 255, 255 } },
+    Vertex3D{ {  0.5f,  0.5f, -0.5 }, { 1.0f, 1.0f }, { 0, 255, 255, 255 } },
+#else
+    // 0 49 83
+    Vertex3D{ { -0.5f, -0.5f, -0.5f },  { 0.0f, 0.0f }, { 55, 120, 0, 255 } },
+    Vertex3D{ {  0.5f, -0.5f, -0.5f },  { 1.0f, 0.0f }, { 55, 120, 0, 255 } },
+    Vertex3D{ {  0.5f,  0.5f, -0.5f },  { 1.0f, 1.0f }, { 55, 120, 0, 255 } },
+    Vertex3D{ {  0.5f,  0.5f, -0.5f },  { 1.0f, 1.0f }, { 55, 120, 0, 255 } },
+    Vertex3D{ { -0.5f,  0.5f, -0.5f },  { 0.0f, 1.0f }, { 55, 120, 0, 255 } },
+    Vertex3D{ { -0.5f, -0.5f, -0.5f },  { 0.0f, 0.0f }, { 55, 120, 0, 255 } },
 
-    Vertex3D{ { 0.5f,  0.5f,  0.5f },  { 1.0f, 0.0f } },
-    Vertex3D{ { 0.5f,  0.5f, -0.5f },  { 1.0f, 1.0f } },
-    Vertex3D{ { 0.5f, -0.5f, -0.5f },  { 0.0f, 1.0f } },
-    Vertex3D{ { 0.5f, -0.5f, -0.5f },  { 0.0f, 1.0f } },
-    Vertex3D{ { 0.5f, -0.5f,  0.5f },  { 0.0f, 0.0f } },
-    Vertex3D{ { 0.5f,  0.5f,  0.5f },  { 1.0f, 0.0f } },
+    Vertex3D{ { -0.5f, -0.5f,  0.5f },  { 0.0f, 0.0f }, { 255, 0, 0, 255 } },
+    Vertex3D{ {  0.5f, -0.5f,  0.5f },  { 1.0f, 0.0f }, { 255, 0, 0, 255 } },
+    Vertex3D{ {  0.5f,  0.5f,  0.5f },  { 1.0f, 1.0f }, { 255, 0, 0, 255 } },
+    Vertex3D{ {  0.5f,  0.5f,  0.5f },  { 1.0f, 1.0f }, { 255, 0, 0, 255 } },
+    Vertex3D{ { -0.5f,  0.5f,  0.5f },  { 0.0f, 1.0f }, { 255, 0, 0, 255 } },
+    Vertex3D{ { -0.5f, -0.5f,  0.5f },  { 0.0f, 0.0f }, { 255, 0, 0, 255 } },
 
-    Vertex3D{ { -0.5f, -0.5f, -0.5f },  { 0.0f, 1.0f } },
-    Vertex3D{ {  0.5f, -0.5f, -0.5f },  { 1.0f, 1.0f } },
-    Vertex3D{ {  0.5f, -0.5f,  0.5f },  { 1.0f, 0.0f } },
-    Vertex3D{ {  0.5f, -0.5f,  0.5f },  { 1.0f, 0.0f } },
-    Vertex3D{ { -0.5f, -0.5f,  0.5f },  { 0.0f, 0.0f } },
-    Vertex3D{ { -0.5f, -0.5f, -0.5f },  { 0.0f, 1.0f } },
+    Vertex3D{ { -0.5f,  0.5f,  0.5f },  { 1.0f, 0.0f }, { 0, 255, 255, 255 } },
+    Vertex3D{ { -0.5f,  0.5f, -0.5f },  { 1.0f, 1.0f }, { 0, 255, 255, 255 } },
+    Vertex3D{ { -0.5f, -0.5f, -0.5f },  { 0.0f, 1.0f }, { 0, 255, 255, 255 } },
+    Vertex3D{ { -0.5f, -0.5f, -0.5f },  { 0.0f, 1.0f }, { 0, 255, 255, 255 } },
+    Vertex3D{ { -0.5f, -0.5f,  0.5f },  { 0.0f, 0.0f }, { 0, 255, 255, 255 } },
+    Vertex3D{ { -0.5f,  0.5f,  0.5f },  { 1.0f, 0.0f }, { 0, 255, 255, 255 } },
 
-    Vertex3D{ { -0.5f,  0.5f, -0.5f },  { 0.0f, 1.0f } },
-    Vertex3D{ {  0.5f,  0.5f, -0.5f },  { 1.0f, 1.0f } },
-    Vertex3D{ {  0.5f,  0.5f,  0.5f },  { 1.0f, 0.0f } },
-    Vertex3D{ {  0.5f,  0.5f,  0.5f },  { 1.0f, 0.0f } },
-    Vertex3D{ { -0.5f,  0.5f,  0.5f },  { 0.0f, 0.0f } },
-    Vertex3D{ { -0.5f,  0.5f, -0.5f },  { 0.0f, 1.0f } },
+    Vertex3D{ { 0.5f,  0.5f,  0.5f },   { 1.0f, 0.0f }, { 255, 0, 255, 255 } },
+    Vertex3D{ { 0.5f,  0.5f, -0.5f },   { 1.0f, 1.0f }, { 255, 0, 255, 255 } },
+    Vertex3D{ { 0.5f, -0.5f, -0.5f },   { 0.0f, 1.0f }, { 255, 0, 255, 255 } },
+    Vertex3D{ { 0.5f, -0.5f, -0.5f },   { 0.0f, 1.0f }, { 255, 0, 255, 255 } },
+    Vertex3D{ { 0.5f, -0.5f,  0.5f },   { 0.0f, 0.0f }, { 255, 0, 255, 255 } },
+    Vertex3D{ { 0.5f,  0.5f,  0.5f },   { 1.0f, 0.0f }, { 255, 0, 255, 255 } },
+
+    Vertex3D{ { -0.5f, -0.5f, -0.5f },  { 0.0f, 1.0f }, { 0, 0, 127, 255 } },
+    Vertex3D{ {  0.5f, -0.5f, -0.5f },  { 1.0f, 1.0f }, { 0, 0, 127, 255 } },
+    Vertex3D{ {  0.5f, -0.5f,  0.5f },  { 1.0f, 0.0f }, { 0, 0, 127, 255 } },
+    Vertex3D{ {  0.5f, -0.5f,  0.5f },  { 1.0f, 0.0f }, { 0, 0, 127, 255 } },
+    Vertex3D{ { -0.5f, -0.5f,  0.5f },  { 0.0f, 0.0f }, { 0, 0, 127, 255 } },
+    Vertex3D{ { -0.5f, -0.5f, -0.5f },  { 0.0f, 1.0f }, { 0, 0, 127, 255 } },
+
+    Vertex3D{ { -0.5f,  0.5f, -0.5f },  { 0.0f, 1.0f }, { 60, 255, 0, 255 } },
+    Vertex3D{ {  0.5f,  0.5f, -0.5f },  { 1.0f, 1.0f }, { 60, 255, 0, 255 } },
+    Vertex3D{ {  0.5f,  0.5f,  0.5f },  { 1.0f, 0.0f }, { 60, 255, 0, 255 } },
+    Vertex3D{ {  0.5f,  0.5f,  0.5f },  { 1.0f, 0.0f }, { 60, 255, 0, 255 } },
+    Vertex3D{ { -0.5f,  0.5f,  0.5f },  { 0.0f, 0.0f }, { 60, 255, 0, 255 } },
+    Vertex3D{ { -0.5f,  0.5f, -0.5f },  { 0.0f, 1.0f }, { 60, 255, 0, 255 } },
 #endif
 };
 
@@ -129,11 +158,14 @@ protected:
     void begin()
     {
         glBindVertexArray(m_VAO);
+        glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
-        glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+        glEnableVertexAttribArray(2);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (const void*)0);
         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (const void*)(offsetof(Vertex3D, uv)));
+        glVertexAttribPointer(2, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex3D), (const void*)(offsetof(Vertex3D, color)));
     }
 
     template <typename T>
@@ -151,6 +183,7 @@ protected:
         glDrawArrays(GL_TRIANGLES, 0, 36);
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
+        glDisableVertexAttribArray(2);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 private:
@@ -162,6 +195,7 @@ private:
         glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
         glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex3D) * 36, &g_triangle_data[0], GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
+
     }
 
     GLuint m_VBO;
@@ -207,7 +241,17 @@ struct Camera3D
     {
         m_position += (velocity * deltatime) * m_right;
     }
-    
+
+    void rollLeft(const float offset, const float sensitivity)
+    {
+        m_roll -= offset * sensitivity;
+    }
+
+    void rollRight(const float offset, const float sensitivity)
+    {
+        m_roll += offset * sensitivity;
+    }
+
     void moveMouse(float xoffset, float yoffset, const float sensitivity)
     {
         xoffset *= sensitivity;
@@ -236,6 +280,7 @@ private:
     glm::vec3 m_up{0.0f, 1.0f, 0.0f};
     float m_pitch = 0.0f;
     float m_yaw = 0.0f;
+    float m_roll = 0.0f;
 };
 
 
@@ -250,7 +295,7 @@ void moveCameraMouse(Camera3D& camera, tewi::InputManager& inputManager)
     lastx = mousecoords.x;
     lasty = mousecoords.y;
 
-    float sensitivity = 1.0f;
+    float sensitivity = 0.5f;
     camera.moveMouse(xoffset, yoffset, sensitivity);
 }
 
@@ -271,11 +316,7 @@ void startGame(asl::string_view str, tewi::Width width, tewi::Height height)
     tewi::setWindowKeyboardCallback(win, [](GLFWwindow* win, int key, int scancode, int action, int mods) {
         auto& inputman = *(static_cast<tewi::InputManager*>(glfwGetWindowUserPointer(win)));
 
-        if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        {
-            glfwWindowShouldClose(win);
-        }
-        else if (action == GLFW_PRESS)
+        if (action == GLFW_PRESS)
         {
             inputman.pressKey(key);
         }
@@ -299,6 +340,7 @@ void startGame(asl::string_view str, tewi::Width width, tewi::Height height)
     FragmentShader frag(tewi::API::Device<APITag>{}, g_fragsrc);
     
     tewi::ShaderProgram<APITag> shader(g_vertlocations, vert, frag);
+
 
     auto proj = glm::perspective(glm::radians(45.0f), (float)width.value() / (float)height.value(), 0.1f, 100.0f);
     auto MVP = proj;
@@ -329,6 +371,21 @@ void startGame(asl::string_view str, tewi::Width width, tewi::Height height)
             {
                 camera.right(deltatime, cameraSpeed);
             }
+            else if (inputManager.isKeyDown(GLFW_KEY_Q))
+            {
+                camera.rollLeft(10.0f, 1.0f);
+            }
+            else if (inputManager.isKeyDown(GLFW_KEY_E))
+            {
+                camera.rollRight(10.0f, 1.0f);
+            }
+        }
+
+        {
+            if (inputManager.isKeyDown(GLFW_KEY_ESCAPE))
+            {
+                tewi::forceCloseWindow(win);
+            }
         }
 
         moveCameraMouse(camera, inputManager);
@@ -337,7 +394,7 @@ void startGame(asl::string_view str, tewi::Width width, tewi::Height height)
         {
             float window_width = (float)(tewi::getWindowWidth(win).value());
             float window_height = (float)(tewi::getWindowHeight(win).value());
-            proj = glm::perspective(glm::radians(90.0f), window_width / window_height, 0.1f, 100.0f);
+            proj = glm::perspective(glm::radians(45.0f), window_width / window_height, 0.1f, 100.0f);
         }
 
         view = camera.getViewMatrix();
